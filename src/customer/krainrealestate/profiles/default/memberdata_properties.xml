@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <object name="portal_memberdata" meta_type="Plone Memberdata Tool">
-    <property name="firstname" type="string"></property>
-    <property name="lastname" type="string"></property>
-    <property name="gender" type="string"></property>
-    <property name="birthdate" type="string"></property>
-    <property name="birthyear" type="string"></property>
-    <property name="city" type="string"></property>
-    <property name="country" type="string"></property>
-    <property name="phone" type="string"></property>
-    <property name="newsletter" type="boolean"></property>
+    <property name="office_name" type="string"></property>
+    <property name="office_adress" type="string"></property>
+    <property name="office_phone" type="string"></property>
+    <property name="us_line" type="string"></property>
+    <property name="cell_phone" type="string"></property>
+    <property name="skype_name" type="string"></property>
+    <property name="areas" type="string"></property>
+    <property name="languages" type="string"></property>
+    <property name="social_fb" type="string"></property>
+    <property name="social_twitter" type="string"></property>
+    <property name="social_youtube" type="string"></property>
+    <property name="social_google" type="string"></property>
+    <property name="social_linkedin" type="string"></property>
 </object>

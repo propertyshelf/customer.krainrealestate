@@ -1,3 +1,4 @@
+ # -*- coding: utf-8 -*-
 from plone.app.users.userdataschema import IUserDataSchema
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 from zope import schema
@@ -6,9 +7,23 @@ from zope.interface import implements
 from customer.krainrealestate import _
 
 
-gender_options = SimpleVocabulary([
-    SimpleTerm(value='Male', title=_(u'Male')),
-    SimpleTerm(value='Female', title=_(u'Female')),
+areas_options = SimpleVocabulary([
+    SimpleTerm(value='Alajuela', title=_(u'Alajuela')),
+    SimpleTerm(value='Cartago', title=_(u'Cartago')),
+    SimpleTerm(value='Guanacaste', title=_(u'Guanacaste')),
+    SimpleTerm(value='Heredia', title=_(u'Heredia')),
+    SimpleTerm(value='Lim\xf3n', title=_(u'Limón')),
+    SimpleTerm(value='Puntarenas', title=_(u'Puntarenas')),
+    SimpleTerm(value='San Jos\xe9', title=_(u'San José')),
+    ])
+languages_options = SimpleVocabulary([
+    SimpleTerm(value='English', title=_(u'English')),
+    SimpleTerm(value='Spanish', title=_(u'Español')),
+    SimpleTerm(value='German', title=_(u'Deutsch')),
+    SimpleTerm(value='French', title=_(u'Français')),
+    SimpleTerm(value='Russian', title=_(u'русский')),
+    SimpleTerm(value='Italian', title=_(u'Italiano')),
+    SimpleTerm(value='Chinese', title=_(u'中国的')),
     ])
 
 def validateAccept(value):
@@ -28,67 +43,83 @@ class IEnhancedUserDataSchema(IUserDataSchema):
     """ Use all the fields from the default user data schema, and add various
     extra fields.
     """
-    firstname = schema.TextLine(
-        title=_(u'label_firstname', default=u'First name'),
-        description=_(u'help_firstname',
-                      default=u"Fill in your given name."),
+    office_name = schema.TextLine(
+        title=_(u'label_office_name', default=u'Name of your Office'),
+        description=_(u'help_office_name',
+                      default=u"Fill in the name of the Office your are working for."),
         required=False,
         )
-    lastname = schema.TextLine(
-        title=_(u'label_lastname', default=u'Last name'),
-        description=_(u'help_lastname',
-                      default=u"Fill in your surname or your family name."),
+    office_adress = schema.TextLine(
+        title=_(u'label_office_adress', default=u'Office Adress'),
+        description=_(u'help_office_adress',
+                      default=u"Fill in the adress of your office."),
         required=False,
         )
-    gender = schema.Choice(
-        title=_(u'label_gender', default=u'Gender'),
-        description=_(u'help_gender',
-                      default=u"Are you a girl or a boy?"),
-        vocabulary = gender_options,
+    office_phone = schema.TextLine(
+        title=_(u'label_office_phone', default=u'Office Phone'),
+        description=_(u'help_office_phone',
+                      default=u"Fill in your phone number in the office."),
         required=False,
         )
-    birthdate = schema.Date(
-        title=_(u'label_birthdate', default=u'birthdate'),
-        description=_(u'help_birthdate',
-            default=u'Your date of birth, in the format dd-mm-yyyy'),
+    us_line = schema.TextLine(
+        title=_(u'label_us_line', default=u'U.S. Line'),
+        description=_(u'help_us_line',
+                      default=u"Fill in your U.S. Line phone nr."),
         required=False,
         )
-    birthyear = schema.TextLine(
-        title=_(u'label_birthyear', default=u'Year of birth'),
-        description=_(u'help_birthyear',
-                      default=u"Your birth year, in the format YYYY."),
+    cell_phone = schema.TextLine(
+        title=_(u'label_cell_phone', default=u'Cell Phone'),
+        description=_(u'help_cell_phone',
+                      default=u"Fill in your cell phone nr."),
         required=False,
         )
-    city = schema.TextLine(
-        title=_(u'label_city', default=u'City'),
-        description=_(u'help_city',
-                      default=u"Fill in the city you live in."),
+    skype_name = schema.TextLine(
+        title=_(u'label_skype_name', default=u'Skype Name'),
+        description=_(u'help_skype_name',
+                      default=u"Fill in your Skype name"),
         required=False,
         )
-    country = schema.TextLine(
-        title=_(u'label_country', default=u'Country'),
-        description=_(u'help_country',
-                      default=u"Fill in the country you live in."),
+    areas = schema.Choice(
+        title=_(u'label_areas', default=u'Select the areas you service'),
+        description=_(u'help_areas',
+                      default=u"In which areas are you active?"),
+        vocabulary = areas_options,
         required=False,
         )
-    phone = schema.TextLine(
-        title=_(u'label_phone', default=u'Telephone number'),
-        description=_(u'help_phone',
-                      default=u"Leave your phone number so we can reach you."),
+    languages = schema.Choice(
+        title=_(u'label_languages', default=u'Select the languages you speak.'),
+        description=_(u'help_languages',
+                      default=u"In which languages you can speak with customers?"),
+        vocabulary = languages_options,
         required=False,
         )
-    newsletter = schema.Bool(
-        title=_(u'label_newsletter', default=u'Subscribe to newsletter'),
-        description=_(u'help_newsletter',
-                      default=u"If you tick this box, we'll subscribe you to "
-                        "our newsletter."),
+    social_fb = schema.TextLine(
+        title=_(u'label_facebook_name', default=u'Facebook Name'),
+        description=_(u'help_facebook_name',
+                      default=u"Fill in your Facebook name"),
         required=False,
         )
-    accept = schema.Bool(
-        title=_(u'label_accept', default=u'Accept terms of use'),
-        description=_(u'help_accept',
-                      default=u"Tick this box to indicate that you have found,"
-                      " read and accepted the terms of use for this site. "),
-        required=True,
-        constraint=validateAccept,
+    social_twitter = schema.TextLine(
+        title=_(u'label_twitter_name', default=u'Twitter Name'),
+        description=_(u'help_twitter_name',
+                      default=u"Fill in your twitter name"),
+        required=False,
+        )
+    social_youtube = schema.TextLine(
+        title=_(u'label_youtube_chanel', default=u'Youtube Chanel'),
+        description=_(u'help_youtube_chanel',
+                      default=u"Fill in your youtube chanel name"),
+        required=False,
+        )
+    social_google = schema.TextLine(
+        title=_(u'label_google_name', default=u'g+ Name'),
+        description=_(u'help_youtube_chanel',
+                      default=u"Fill in your google g+ name"),
+        required=False,
+        )
+    social_Linkedin = schema.TextLine(
+        title=_(u'label_linkedin_name', default=u'LinkedIn name'),
+        description=_(u'help_youtube_chanel',
+                      default=u"Fill in your LinkedIn account name"),
+        required=False,
         )
