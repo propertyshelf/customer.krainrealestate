@@ -6,7 +6,7 @@ from customer.krainrealestate.testing import\
     CUSTOMER_KRAINREALESTATE_INTEGRATION_TESTING
 
 
-class TestExample(unittest.TestCase):
+class TestSetup(unittest.TestCase):
 
     layer = CUSTOMER_KRAINREALESTATE_INTEGRATION_TESTING
     
@@ -16,10 +16,6 @@ class TestExample(unittest.TestCase):
         self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
     
     def test_product_is_installed(self):
-        """ Validate that our products GS profile has been run and the product 
-            installed
-        """
-        pid = 'customer.krainrealestate'
-        installed = [p['id'] for p in self.qi_tool.listInstalledProducts()]
-        self.assertTrue(pid in installed,
-                        'package appears not to have been installed')
+        """Test that the product is installed."""
+        self.assertTrue(self.qi_tool.isProductInstalled(
+            'customer.krainrealestate'))
