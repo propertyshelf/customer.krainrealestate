@@ -117,7 +117,7 @@ class IEnhancedUserDataSchema(IUserDataSchema):
                       default=u"Fill in your google g+ name"),
         required=False,
         )
-    social_Linkedin = schema.TextLine(
+    social_linkedin = schema.TextLine(
         title=_(u'label_linkedin_name', default=u'LinkedIn name'),
         description=_(u'help_youtube_chanel',
                       default=u"Fill in your LinkedIn account name"),
