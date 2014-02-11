@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import unittest2 as unittest
 
+from plone.browserlayer import utils as layerutils
 from Products.CMFCore.utils import getToolByName
 
+from customer.krainrealestate.browser.interfaces import IKrainRealestate
 from customer.krainrealestate.testing import\
     CUSTOMER_KRAINREALESTATE_INTEGRATION_TESTING
 
@@ -20,3 +22,7 @@ class TestSetup(unittest.TestCase):
         """Test that the product is installed."""
         self.assertTrue(self.qi_tool.isProductInstalled(
             'customer.krainrealestate'))
+
+    def test_browserlayer(self):
+        """Test that the browserlayer is registered."""
+        self.assertIn(IKrainRealestate, layerutils.registered_layers())
