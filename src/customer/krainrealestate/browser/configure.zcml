@@ -6,5 +6,20 @@
     i18n_domain="customer.krainrealestate">
 
 
- 
+ <browser:page
+    for="Products.CMFPlone.Portal.PloneSite"
+    layer=".interfaces.IKrainRealestate"
+    name="personal-information"
+    class=".CustomizedUserDataPanel.CustomizedUserDataPanel"
+    permission="cmf.SetOwnProperties"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.Portal.PloneSite"
+    layer=".interfaces.IKrainRealestate"
+    name="user-information"
+    class=".CustomizedUserDataPanel.CustomizedUserDataPanel"
+    permission="cmf.SetOwnProperties"
+    />
+    
 </configure>

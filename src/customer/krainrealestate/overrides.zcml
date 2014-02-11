@@ -1,6 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="collective.examples.userdata">
+    i18n_domain="customer.krainrealestate">
 
   <adapter
     provides=".userdataschema.IEnhancedUserDataSchema"

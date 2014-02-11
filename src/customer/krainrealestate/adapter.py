@@ -6,15 +6,15 @@ class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
     """
     """
     def get_office_name(self):
-        return self.context.getProperty('office_name', '')
+        return unicode(str(self.context.getProperty('office_name', '')), 'utf-8')
     def set_office_name(self, value):
-        return self.context.setMemberProperties({'office_name': value})
+        return unicode(str(self.context.setMemberProperties({'office_name': value})), 'utf-8')
     office_name = property(get_office_name, set_office_name)
 
     def get_office_adress(self):
-        return self.context.getProperty('office_adress', '')
+        return unicode(str(self.context.getProperty('office_adress', '')), 'utf-8')
     def set_office_adress(self, value):
-        return self.context.setMemberProperties({'office_adress': value})
+        return unicode(str(self.context.setMemberProperties({'office_adress': value})), 'utf-8')
     office_adress = property(get_office_adress, set_office_adress)
 
     def get_office_phone(self):
@@ -36,21 +36,21 @@ class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
     cell_phone = property(get_cell_phone, set_cell_phone)
 
     def get_skype_name(self):
-        return self.context.getProperty('skype_name', '')
+        return unicode(str(self.context.getProperty('skype_name', '')), 'utf-8')
     def set_skype_name(self, value):
-        return self.context.setMemberProperties({'skype_name': value})
+        return unicode(str(self.context.setMemberProperties({'skype_name': value})), 'utf-8')
     skype_name = property(get_skype_name, set_skype_name)
 
     def get_areas(self):
-        return self.context.getProperty('areas', '')
+        return unicode(str(self.context.getProperty('areas', '')), 'utf-8')
     def set_areas(self, value):
-        return self.context.setMemberProperties({'areas': value})
+        return unicode(str(self.context.setMemberProperties({'areas': value})), 'utf-8')
     areas = property(get_areas, set_areas)
 
     def get_languages(self):
-        return self.context.getProperty('languages', '')
+        return unicode(str(self.context.getProperty('languages', '')), 'utf-8')
     def set_languages(self, value):
-        return self.context.setMemberProperties({'languages': value})
+        return unicode(str(self.context.setMemberProperties({'languages': value})), 'utf-8')
     languages = property(get_languages, set_languages)
 
     def get_social_fb(self):
