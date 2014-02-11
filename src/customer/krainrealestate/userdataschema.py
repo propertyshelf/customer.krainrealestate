@@ -12,18 +12,18 @@ areas_options = SimpleVocabulary([
     SimpleTerm(value='Cartago', title=_(u'Cartago')),
     SimpleTerm(value='Guanacaste', title=_(u'Guanacaste')),
     SimpleTerm(value='Heredia', title=_(u'Heredia')),
-    SimpleTerm(value='Lim\xf3n', title=_(u'Limón')),
+    SimpleTerm(value='Limon', title=_(u'Limon')),
     SimpleTerm(value='Puntarenas', title=_(u'Puntarenas')),
-    SimpleTerm(value='San Jos\xe9', title=_(u'San José')),
+    SimpleTerm(value='San Jose', title=_(u'San Jose')),
     ])
 languages_options = SimpleVocabulary([
     SimpleTerm(value='English', title=_(u'English')),
-    SimpleTerm(value='Spanish', title=_(u'Español')),
-    SimpleTerm(value='German', title=_(u'Deutsch')),
-    SimpleTerm(value='French', title=_(u'Français')),
-    SimpleTerm(value='Russian', title=_(u'русский')),
-    SimpleTerm(value='Italian', title=_(u'Italiano')),
-    SimpleTerm(value='Chinese', title=_(u'中国的')),
+    SimpleTerm(value='Spanish', title=_(u'Spanish')),
+    SimpleTerm(value='German', title=_(u'German')),
+    SimpleTerm(value='French', title=_(u'French')),
+    SimpleTerm(value='Russian', title=_(u'Russian')),
+    SimpleTerm(value='Italian', title=_(u'Italian')),
+    SimpleTerm(value='Chinese', title=_(u'Chinese')),
     ])
 
 def validateAccept(value):
