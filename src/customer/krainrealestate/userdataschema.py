@@ -79,18 +79,19 @@ class IEnhancedUserDataSchema(IUserDataSchema):
                       default=u"Fill in your Skype name"),
         required=False,
         )
-    areas = schema.Choice(
+    areas = schema.Tuple(
         title=_(u'label_areas', default=u'Select the areas you service'),
         description=_(u'help_areas',
                       default=u"In which areas are you active?"),
-        vocabulary = areas_options,
+        value_type = schema.Choice(
+                        vocabulary = areas_options),
         required=False,
         )
-    languages = schema.Choice(
+    languages = schema.Tuple(
         title=_(u'label_languages', default=u'Select the languages you speak.'),
         description=_(u'help_languages',
                       default=u"In which languages you can speak with customers?"),
-        vocabulary = languages_options,
+        value_type =schema.Choice(vocabulary = languages_options),
         required=False,
         )
     social_fb = schema.TextLine(
