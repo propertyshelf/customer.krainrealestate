@@ -42,15 +42,31 @@ class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
     skype_name = property(get_skype_name, set_skype_name)
 
     def get_areas(self):
-        return unicode(str(self.context.getProperty('areas', '')), 'utf-8')
+        """Split memberdata area string into a list"""
+        value = [] 
+        areas = self.context.getProperty('areas', '')
+        if areas: 
+             value = areas.split(',') 
+        return value
+
     def set_areas(self, value):
-        return unicode(str(self.context.setMemberProperties({'areas': value})), 'utf-8')
+        """Join area-list into area-string for portal_memberdata"""
+        area_string = ','.join(value) 
+        return self.context.setMemberProperties({'areas': area_string})
+
     areas = property(get_areas, set_areas)
 
     def get_languages(self):
-        return unicode(str(self.context.getProperty('languages', '')), 'utf-8')
+        """Split memberdata languages string into a list"""
+        value = [] 
+        lang = self.context.getProperty('languages', '')
+        if lang: 
+             value = lang.split(',') 
+        return value
+        
     def set_languages(self, value):
-        return unicode(str(self.context.setMemberProperties({'languages': value})), 'utf-8')
+        lang_string = ','.join(value)
+        return self.context.setMemberProperties({'languages': lang_string})
     languages = property(get_languages, set_languages)
 
     def get_social_fb(self):

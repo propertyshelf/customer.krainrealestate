@@ -2,29 +2,9 @@
 from plone.app.users.userdataschema import IUserDataSchema
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 from zope import schema
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope.interface import implements
 from customer.krainrealestate import _
 
-
-areas_options = SimpleVocabulary([
-    SimpleTerm(value='Alajuela', title=_(u'Alajuela')),
-    SimpleTerm(value='Cartago', title=_(u'Cartago')),
-    SimpleTerm(value='Guanacaste', title=_(u'Guanacaste')),
-    SimpleTerm(value='Heredia', title=_(u'Heredia')),
-    SimpleTerm(value='Limon', title=_(u'Limon')),
-    SimpleTerm(value='Puntarenas', title=_(u'Puntarenas')),
-    SimpleTerm(value='San Jose', title=_(u'San Jose')),
-    ])
-languages_options = SimpleVocabulary([
-    SimpleTerm(value='English', title=_(u'English')),
-    SimpleTerm(value='Spanish', title=_(u'Spanish')),
-    SimpleTerm(value='German', title=_(u'German')),
-    SimpleTerm(value='French', title=_(u'French')),
-    SimpleTerm(value='Russian', title=_(u'Russian')),
-    SimpleTerm(value='Italian', title=_(u'Italian')),
-    SimpleTerm(value='Chinese', title=_(u'Chinese')),
-    ])
 
 def validateAccept(value):
     if not value == True:
@@ -83,8 +63,7 @@ class IEnhancedUserDataSchema(IUserDataSchema):
         title=_(u'label_areas', default=u'Select the areas you service'),
         description=_(u'help_areas',
                       default=u"In which areas are you active?"),
-        value_type = schema.Choice(
-                        vocabulary = areas_options),
+        value_type = schema.Choice(vocabulary = u'plone.mls.listing.LocationCounties'),
         required=False,
         )
     languages = schema.Tuple(
