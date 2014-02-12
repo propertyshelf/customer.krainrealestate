@@ -7,8 +7,12 @@
     i18n_domain="customer.krainrealestate">
 
 
-  <include package=".browser" />
   <i18n:registerTranslations directory="locales" />
+
+  <!-- Include package dependencies. -->
+  <!-- ============================= -->
+  <includeDependencies package="." />
+  <include package=".browser" />
 
   <genericsetup:registerProfile
       name="default"

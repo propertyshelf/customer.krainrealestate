@@ -44,6 +44,7 @@ setup(name='customer.krainrealestate',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'plone.mls.listing',
       ],
       extras_require={'test': ['plone.app.testing']},
       entry_points="""
