@@ -19,7 +19,7 @@
     layer=".interfaces.IKrainRealestate"
     name="user-information"
     class=".CustomizedUserDataPanel.CustomizedUserDataPanel"
-    permission="cmf.SetOwnProperties"
+    permission="cmf.ManagePortal"
     />
     
 </configure>
