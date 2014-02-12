@@ -26,3 +26,8 @@ class TestSetup(unittest.TestCase):
     def test_browserlayer(self):
         """Test that the browserlayer is registered."""
         self.assertIn(IKrainRealestate, layerutils.registered_layers())
+
+    def test_dependency_installed(self):
+        """Test that the dependency product is installed."""
+        self.assertTrue(self.qi_tool.isProductInstalled(
+            'plone.mls.listing'))
