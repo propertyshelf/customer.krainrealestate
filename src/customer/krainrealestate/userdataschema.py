@@ -91,7 +91,7 @@ class IEnhancedUserDataSchema(IUserDataSchema):
         title=_(u'label_languages', default=u'Select the languages you speak.'),
         description=_(u'help_languages',
                       default=u"In which languages you can speak with customers?"),
-        value_type =schema.Choice(vocabulary = languages_options),
+        value_type =schema.Choice(vocabulary = u'plone.app.vocabularies.AvailableContentLanguages'),
         required=False,
         )
     social_fb = schema.TextLine(
