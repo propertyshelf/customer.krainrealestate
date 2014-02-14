@@ -59,11 +59,10 @@ class IEnhancedUserDataSchema(IUserDataSchema):
                       default=u"Fill in your Skype name"),
         required=False,
         )
-    areas = schema.Tuple(
-        title=_(u'label_areas', default=u'Select the areas you service'),
+    areas = schema.Text(
+        title=_(u'label_areas', default=u'Type the areas you service'),
         description=_(u'help_areas',
-                      default=u"In which areas are you active?"),
-        value_type = schema.Choice(vocabulary = u'plone.mls.listing.LocationCounties'),
+                      default=u"In which areas are you active? This will be visible on the agent pages."),
         required=False,
         )
     languages = schema.Tuple(

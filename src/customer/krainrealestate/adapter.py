@@ -3,8 +3,7 @@ from plone.app.users.browser.personalpreferences import UserDataPanelAdapter
 
 
 class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
-    """
-    """
+    """Custom Memberdata Adapter"""
     def get_office_name(self):
         return unicode(str(self.context.getProperty('office_name', '')), 'utf-8')
     def set_office_name(self, value):
@@ -42,17 +41,12 @@ class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
     skype_name = property(get_skype_name, set_skype_name)
 
     def get_areas(self):
-        """Split memberdata area string into a list"""
-        value = [] 
-        areas = self.context.getProperty('areas', '')
-        if areas: 
-             value = areas.split(',') 
-        return value
+        """Get memberdata area and ensure encoding"""
+        return unicode(str(self.context.getProperty('areas', '')), 'utf-8')
 
     def set_areas(self, value):
-        """Join area-list into area-string for portal_memberdata"""
-        area_string = ','.join(value) 
-        return self.context.setMemberProperties({'areas': area_string})
+        """Set memberdata area and ensure encoding"""
+        return unicode(str(self.context.setMemberProperties({'areas': value})), 'utf-8')
 
     areas = property(get_areas, set_areas)
 
