@@ -7,6 +7,9 @@ from plone.app.layout.viewlets.common import ViewletBase
 #from plone.directives import form
 from plone.memoize.view import memoize
 
+from z3c.form import form,field, button
+from zope import schema
+from zope.annotation.interfaces import IAnnotations
 from zope.interface import Interface, alsoProvides, noLongerProvides
 from zope.traversing.browser.absoluteurl import absoluteURL
 
@@ -42,6 +45,13 @@ class AgentProfileViewlet(ViewletBase):
             return self.context_state.current_base_url()
         else:
             return absoluteURL(self.context, self.request) + '/'
+
+    @property
+    def get_AgentId(self):
+        """Get Agent ID"""
+        annotations = IAnnotations(self.context)
+        config = annotations.get(CONFIGURATION_KEY, {})
+        return config.get('agent_id', u'')
 
 
 class AgentProfileStatus(object):
@@ -90,3 +100,42 @@ class AgentProfileToggle(object):
 
         self.context.plone_utils.addPortalMessage(msg, msg_type)
         self.request.response.redirect(self.context.absolute_url())
+
+class IAgentProfileConfiguration(Interface):
+    """AgentProfile Configuration Form."""
+
+    agent_id = schema.TextLine(
+        required=True,
+        title=_(
+            u'Agent ID',
+            default=u'Please enter the Plone Member ID of the Agent',
+        ),
+    )
+
+
+class AgentProfileConfiguration(form.Form):
+    """AgentProfile Configuration Form."""
+
+    fields = field.Fields(IAgentProfileConfiguration)
+    label = _(u"change 'Agent Profile'")
+    description = _(
+        u"Adjust the AgentProfile ID of this viewlet."
+    )
+
+    def getContent(self):
+        annotations = IAnnotations(self.context)
+        return annotations.get(CONFIGURATION_KEY,
+                               annotations.setdefault(CONFIGURATION_KEY, {}))
+
+    @button.buttonAndHandler(_(u'Save'))
+    def handle_save(self, action):
+        data, errors = self.extractData()
+        if not errors:
+            annotations = IAnnotations(self.context)
+            annotations[CONFIGURATION_KEY] = data
+            self.request.response.redirect(absoluteURL(self.context,
+                                                       self.request))
+
+    @button.buttonAndHandler(_(u'Cancel'))
+    def handle_cancel(self, action):
+        self.request.response.redirect(absoluteURL(self.context, self.request))

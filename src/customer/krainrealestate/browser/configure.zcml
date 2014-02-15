@@ -51,5 +51,13 @@
       name="agentprofile-toggle"
       permission="cmf.ModifyPortalContent"
       />
+
+  <browser:page
+      class=".agentprofile_viewlet.AgentProfileConfiguration"
+      for=".agentprofile_viewlet.IAgentProfile"
+      layer=".interfaces.IKrainRealestate"
+      name="agentprofile-config"
+      permission="cmf.ModifyPortalContent"
+      />
     
 </configure>

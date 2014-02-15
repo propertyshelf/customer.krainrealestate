@@ -10,6 +10,7 @@
       tal:condition="view/available">
     <div class="agentprofile">
        <p>Agent Profile Viewlet coming soon ....</p>
+       <p tal:content="structure view/get_AgentId">{Rasta}</p>
     </div>
   </section>
 </html>
