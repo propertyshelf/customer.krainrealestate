@@ -22,5 +22,9 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   <!-- -*- extra stuff goes here -*- -->
+  <!-- enable our viewlets for the BaseObject, for us: Pages -->
+  <class class="Products.Archetypes.BaseObject.BaseObject">
+    <implements interface="customer.krainrealestate.browser.agentprofile_viewlet.IPossibleAgentProfile" />
+  </class>
   
 </configure>

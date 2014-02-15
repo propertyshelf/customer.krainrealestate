@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="customer.krainrealestate"
+      tal:omit-tag="">
+  
+  <section class="agentprofile-wrapper viewlet"
+      tal:condition="view/available">
+      <p>Agent Profile Viewlet coming soon ....</p>
+    <div class="agentprofile"
+      tal:condition="view/view_url"
+      tal:content='structure view/view_url'></div>
+  </section>
+</html>

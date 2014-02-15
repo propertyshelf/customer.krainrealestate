@@ -21,5 +21,35 @@
     class=".CustomizedUserDataPanel.CustomizedUserDataPanel"
     permission="cmf.ManagePortal"
     />
+
+
+    <!-- Agent Profile. -->
+    <!-- ================ -->
+  <browser:viewlet
+      class=".agentprofile_viewlet.AgentProfileViewlet"
+      for=".header_plugins.IHeaderPlugins"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+      name="customer.krainrealestate.agentprofile"
+      permission="zope2.View"
+      template="templates/agentprofile.pt"
+      />
+
+
+  <browser:page
+      class=".agentprofile_viewlet.AgentProfileStatus"
+      for="*"
+      layer=".interfaces.IKrainRealestate"
+      name="agentprofile-status"
+      permission="cmf.ModifyPortalContent"
+      />
+
+  <browser:page
+      class=".agentprofile_viewlet.AgentProfileToggle"
+      for="*"
+      layer=".interfaces.IKrainRealestate"
+      name="agentprofile-toggle"
+      permission="cmf.ModifyPortalContent"
+      />
     
 </configure>
