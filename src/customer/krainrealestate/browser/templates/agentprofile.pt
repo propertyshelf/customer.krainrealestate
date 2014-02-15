@@ -8,9 +8,8 @@
   
   <section class="agentprofile-wrapper viewlet"
       tal:condition="view/available">
-      <p>Agent Profile Viewlet coming soon ....</p>
-    <div class="agentprofile"
-      tal:condition="view/view_url"
-      tal:content='structure view/view_url'></div>
+    <div class="agentprofile">
+       <p>Agent Profile Viewlet coming soon ....</p>
+    </div>
   </section>
 </html>

@@ -29,7 +29,7 @@
       class=".agentprofile_viewlet.AgentProfileViewlet"
       for=".agentprofile_viewlet.IAgentProfile"
       layer=".interfaces.IKrainRealestate"
-      manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
       name="customer.krainrealestate.agentprofile"
       permission="zope2.View"
       template="templates/agentprofile.pt"
