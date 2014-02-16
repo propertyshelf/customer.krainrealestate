@@ -2,10 +2,11 @@
 """Agent Profile Viewlet"""
 
 #zope imports
+from Acquisition import aq_inner
+
 from plone.app.layout.viewlets.common import ViewletBase
-#from plone.app.layout.navigation.interfaces import INavigationRoot
-#from plone.directives import form
 from plone.memoize.view import memoize
+from Products.CMFCore.utils import getToolByName
 
 from z3c.form import form,field, button
 from zope import schema
@@ -38,6 +39,21 @@ class AgentProfileViewlet(ViewletBase):
         """Prepare view related data."""
         super(AgentProfileViewlet, self).update()
 
+        annotations = IAnnotations(self.context)
+        config = annotations.get(CONFIGURATION_KEY, {})
+        context = aq_inner(self.context)
+        membership = getToolByName(context, 'portal_membership')
+
+        self.agentId = config.get('agent_id', u'')
+        self.agent = membership.getMemberById(self.agentId)
+        try:
+            self.proptool = self.agent.getProperty
+        except AttributeError:
+            """ No valid agent found """
+            self.agent = None
+            self.proptool = None
+        
+
     @memoize
     def view_url(self):
         """Generate view url."""
@@ -49,9 +65,56 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def get_AgentId(self):
         """Get Agent ID"""
-        annotations = IAnnotations(self.context)
-        config = annotations.get(CONFIGURATION_KEY, {})
-        return config.get('agent_id', u'')
+        return self.agentId
+
+    @property
+    def get_Agent(self):
+        """Get the Agent and its data"""
+        return self.agent
+
+    @property
+    def AgentAvailable(self):
+        """Agent Data available?"""
+        if (self.agent is not None):
+            return True
+        else:
+            return False
+
+    @property
+    def Title(self):
+        """Agent Fullname"""
+        return self.proptool('fullname')
+
+    @property
+    def OfficeAvailable(self):
+        """Office Data available?"""
+        if (len(self.OfficeName)>0 or len(self.OfficeAdress)>0):
+            return True
+        else:
+            return False
+
+    @property
+    def OfficeName(self):
+        """"Delivers the name of the agents office"""
+        return self.proptool('office_name')
+
+    @property
+    def OfficeAdress(self):
+        """"Delivers the adress of the agents office"""
+        return self.proptool('office_adress')
+
+    @property
+    def LanguagesAvailable(self):
+        """Languages available?"""
+        if(len(self.proptool('languages'))>0):
+            return True
+        else:
+            return False
+
+    @property
+    def Languages(self):
+        """"Deliver Languages of the Agent"""
+        return self.proptool('languages')
 
 
 class AgentProfileStatus(object):
@@ -119,7 +182,7 @@ class AgentProfileConfiguration(form.Form):
     fields = field.Fields(IAgentProfileConfiguration)
     label = _(u"change 'Agent Profile'")
     description = _(
-        u"Adjust the AgentProfile ID of this viewlet."
+        u"Adjust the AgentProfile ID of this Page."
     )
 
     def getContent(self):

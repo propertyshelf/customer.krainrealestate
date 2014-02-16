@@ -8,9 +8,14 @@
   
   <section class="agentprofile-wrapper viewlet"
       tal:condition="view/available">
-    <div class="agentprofile">
-       <p>Agent Profile Viewlet coming soon ....</p>
-       <p tal:content="structure view/get_AgentId">{Rasta}</p>
+    <div class="agentprofile" tal:condition="view/AgentAvailable">
+      <h2 tal:content="structure view/Title">(Full Name)</h2>
+      <div class="agent-office" tal:condition="view/OfficeAvailable">
+        <div class="office_name">(Office Name)</div>
+         <div class="office_adress">(Office Adress)</div>
+      </div>
+      <p tal:content="structure view/get_Agent">{Rasta}</p>
+      <p tal:content="structure view/Languages">{ChattyChat}</p>
     </div>
   </section>
 </html>
