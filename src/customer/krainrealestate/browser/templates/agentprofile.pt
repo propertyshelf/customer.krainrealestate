@@ -8,14 +8,27 @@
   
   <section class="agentprofile-wrapper viewlet"
       tal:condition="view/available">
+
+    <div class="agentportrait" tal:condition="view/AgentPortraitAvailable">
+      <div class="agent-avatar">(Agent Avatar)</div>
+      <div class="agent-updates">(Receive Updates)</div>
+    </div>
+
     <div class="agentprofile" tal:condition="view/AgentAvailable">
       <h2 tal:content="structure view/Title">(Full Name)</h2>
       <div class="agent-office" tal:condition="view/OfficeAvailable">
-        <div class="office_name">(Office Name)</div>
-         <div class="office_adress">(Office Adress)</div>
+        <div class="office_name" tal:content="view/OfficeName">(Office Name)</div>
+        <div class="office_adress" tal:content="view/OfficeAdress">(Office Adress)</div>
       </div>
-      <p tal:content="structure view/get_Agent">{Rasta}</p>
-      <p tal:content="structure view/Languages">{ChattyChat}</p>
+      <div class="agent-contact" tal:condition="view/AgentContactAvailable">
+        (Agent Contact Data)
+      </div>
+      <div class="agent-languages" tal:condition="view/AgentLanguagesAvailable" tal:content="structure view/Languages">
+        (Agent Languages)
+      </div>
+      <div class="agent-social" tal:condition="view/AgentSocialAvailable">
+        (Agent Social Share)
+      </div>
     </div>
   </section>
 </html>

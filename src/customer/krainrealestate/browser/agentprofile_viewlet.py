@@ -104,7 +104,12 @@ class AgentProfileViewlet(ViewletBase):
         return self.proptool('office_adress')
 
     @property
-    def LanguagesAvailable(self):
+    def AgentContactAvailable(self):
+        """Agent Contact Info available?"""
+        return False
+
+    @property
+    def AgentLanguagesAvailable(self):
         """Languages available?"""
         if(len(self.proptool('languages'))>0):
             return True
@@ -116,6 +121,16 @@ class AgentProfileViewlet(ViewletBase):
         """"Deliver Languages of the Agent"""
         return self.proptool('languages')
 
+    @property
+    def AgentSocialAvailable(self):
+        """Agent Social Sharing Info available?"""
+        return False
+
+    @property
+    def AgentPortraitAvailable(self):
+        """Agent Portrait available?"""
+        return False
+    
 
 class AgentProfileStatus(object):
     """Return activation/deactivation status of AgentProfile viewlet."""
