@@ -10,7 +10,7 @@
       tal:condition="view/available">
 
     <div class="agentportrait" tal:condition="view/AgentPortraitAvailable">
-      <div class="agent-avatar">(Agent Avatar)</div>
+      <div class="agent-avatar" tal:content="structure view/AgentPortrait">(Agent Avatar)</div>
       <div class="agent-updates">(Receive Updates)</div>
     </div>
 

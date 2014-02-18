@@ -42,10 +42,10 @@ class AgentProfileViewlet(ViewletBase):
         annotations = IAnnotations(self.context)
         config = annotations.get(CONFIGURATION_KEY, {})
         context = aq_inner(self.context)
-        membership = getToolByName(context, 'portal_membership')
+        self.membership = getToolByName(context, 'portal_membership')
 
         self.agentId = config.get('agent_id', u'')
-        self.agent = membership.getMemberById(self.agentId)
+        self.agent = self.membership.getMemberById(self.agentId)
         try:
             self.proptool = self.agent.getProperty
         except AttributeError:
@@ -129,7 +129,18 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def AgentPortraitAvailable(self):
         """Agent Portrait available?"""
-        return False
+        if (self.agent is not None):
+            return True
+        else:
+            return False
+
+    @property
+    def AgentPortrait(self):
+        """get the agents portrait"""
+        try:
+            return self.membership.getPersonalPortrait(id=self.agentId)
+        except:
+            return False
     
 
 class AgentProfileStatus(object):
