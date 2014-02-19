@@ -5,4 +5,5 @@ _ = MessageFactory("customer.krainrealestate")
 
 def initialize(context):
     from Products.PlonePAS import config
-    config.MEMBER_IMAGE_SCALE = (250, 500)
+    MEMBER_IMAGE_SCALE = (266, 233)
+    config.IMAGE_SCALE_PARAMS['scale'] = MEMBER_IMAGE_SCALE
