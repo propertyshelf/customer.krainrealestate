@@ -1,9 +1,14 @@
  # -*- coding: utf-8 -*-
-from plone.app.users.userdataschema import IUserDataSchema
-from plone.app.users.userdataschema import IUserDataSchemaProvider
 from zope import schema
 from zope.interface import implements
 from customer.krainrealestate import _
+
+try:
+    from plone.app.users.userdataschema import IUserDataSchema, IUserDataSchemaProvider
+    USE_FORMLIB = True
+except ImportError:
+    from plone.app.users.schema import IUserDataSchema
+    USE_FORMLIB = False
 
 
 def validateAccept(value):
