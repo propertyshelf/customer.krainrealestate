@@ -77,10 +77,24 @@
 
         </div>
       </div>
-      <div class="agent-languages" tal:condition="view/AgentLanguagesAvailable">
+      <div class="agent-languages" tal:condition="view/AgentLanguagesAvailable"
+          tal:define="languages view/Languages|nothing">
         <div class="label" i18n:translate="">Languages</div>
           <div class="seperator">:</div>
-          <div class="value" tal:content="view/Languages"/>
+          <div class="value">
+            <tal:languages tal:repeat="language languages">
+              <tal:language 
+                tal:define="lang python:languages.get(language);
+                            id python:lang.get('id');
+                            label python: lang.get('native');
+                            flag python:lang.get('flag');">
+                <div tal:attributes="class string:gentlanguage agentlanguage-${id}">
+                  <img class="language-flag" tal:attributes="src flag" tal:condition="flag" />
+                  <span class="language-label" tal:content="label"/>
+                </div>
+              </tal:language>
+            </tal:languages>
+          </div>
       </div>
       <div class="agent-social" tal:condition="view/AgentSocialAvailable">
         <ul>

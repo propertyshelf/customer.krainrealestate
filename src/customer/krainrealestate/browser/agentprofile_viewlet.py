@@ -55,14 +55,29 @@ class AgentProfileViewlet(ViewletBase):
             self.agent = None
             self.proptool = None
         
+    def getLanguageInfo(self, preferred):
+        """
+           Map and return a dict of language Info, 
+           prefered should be a list of language codes 
 
-    @memoize
-    def view_url(self):
-        """Generate view url."""
-        if not self.context_state.is_view_template():
-            return self.context_state.current_base_url()
-        else:
-            return absoluteURL(self.context, self.request) + '/'
+        """
+        result = {}
+        portal_languages = self.context.portal_languages
+
+        # Get barebone language listing from portal_languages tool
+        langs = portal_languages.getAvailableLanguages()
+
+        # preferred defines which language info choosen
+        for lang, data in langs.items():
+            if lang in preferred:
+                result[lang] = data
+
+        # For convenience, include the language ISO code in the export,
+        # so it is easier to iterate data in the templates
+        for lang, data in result.items():
+            data["id"] = lang
+
+        return result
 
     def safeLink(self, url, absolute=True):
         """check url string for evilness and give a False for empty strings or suspicios protocols"""
@@ -187,8 +202,15 @@ class AgentProfileViewlet(ViewletBase):
 
     @property
     def Languages(self):
-        """"Deliver Languages of the Agent"""
-        return self.proptool('languages')
+        """"Deliver Languages of the Agent"""    
+        foo = self.proptool('languages')
+        value = [] 
+        if foo: 
+            value = foo.split(',')
+            language_map = self.getLanguageInfo(value)
+            return language_map
+        else:
+            return False
 
     @property
     def AgentSocialAvailable(self):
