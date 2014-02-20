@@ -193,7 +193,70 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def AgentSocialAvailable(self):
         """Agent Social Sharing Info available?"""
-        return False
+        if(self.FacebookLink or self.TwitterLink or self.YoutubeLink or self.GoogleLink or self.LinkedinLink):
+            return True
+        else:
+            return False
+
+    @property
+    def FacebookLink(self):
+        """"Deliver Facebook of the Agent"""
+        try:
+            value = self.proptool('social_fb')
+            if(len(value)>0):
+                return 'https://www.facebook.com/' + value
+            else:
+                return False
+        except:
+            return False
+
+    @property
+    def TwitterLink(self):
+        """"Deliver Twitter of the Agent"""
+        try:
+            value = self.proptool('social_twitter')
+            if(len(value)>0):
+                return 'https://www.twitter.com/' + value
+            else:
+                return False
+        except:
+            return False
+
+    @property
+    def YoutubeLink(self):
+        """"Deliver Youtube Account of the Agent"""
+        try:
+            value = self.proptool('social_youtube')
+            if(len(value)>0):
+                return 'http://www.youtube.com/user/' + value
+            else:
+                return False
+        except:
+            return False
+
+    @property
+    def GoogleLink(self):
+        """"Deliver google+ Account of the Agent"""
+        try:
+            value = self.proptool('social_google')
+            if(len(value)>0):
+                return 'https://plus.google.com/' + value
+            else:
+                return False
+        except:
+            return False
+
+    @property
+    def LinkedinLink(self):
+        """"Deliver LinkedIn profile of the Agent"""
+        try:
+            value = self.proptool('social_linkedin')
+            if(len(value)>0):
+                return 'http://www.linkedin.com/' + value
+            else:
+                return False
+        except:
+            return False
 
     @property
     def AgentPortraitAvailable(self):

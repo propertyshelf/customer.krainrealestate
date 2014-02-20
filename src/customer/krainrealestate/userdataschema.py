@@ -97,13 +97,13 @@ class IEnhancedUserDataSchema(IUserDataSchema):
         )
     social_google = schema.TextLine(
         title=_(u'label_google_name', default=u'g+ Name'),
-        description=_(u'help_youtube_chanel',
+        description=_(u'help_google_name',
                       default=u"Fill in your google g+ name"),
         required=False,
         )
     social_linkedin = schema.TextLine(
         title=_(u'label_linkedin_name', default=u'LinkedIn name'),
-        description=_(u'help_youtube_chanel',
-                      default=u"Fill in your LinkedIn account name"),
+        description=_(u'help_linkedin_url',
+                      default=u"Fill in public your LinkedIn Profile url (company/yourcompany, pub/yourname, ...)"),
         required=False,
         )

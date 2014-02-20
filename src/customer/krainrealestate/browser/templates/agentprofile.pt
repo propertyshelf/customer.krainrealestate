@@ -11,7 +11,7 @@
 
     <div class="agentportrait" tal:condition="view/AgentPortraitAvailable">
       <div class="agent-avatar" tal:content="structure view/AgentPortrait">(Agent Avatar)</div>
-      <div class="agent-updates">(Receive Updates)</div>
+      <div class="agent-updates" tal:content="string:&nbsp;">(Receive Updates)</div>
     </div>
 
     <div class="agentprofile" tal:condition="view/AgentAvailable">
@@ -69,11 +69,49 @@
 
         </div>
       </div>
-      <div class="agent-languages" tal:condition="view/AgentLanguagesAvailable" tal:content="structure view/Languages">
-        (Agent Languages)
+      <div class="agent-languages" tal:condition="view/AgentLanguagesAvailable">
+        <div class="label" i18n:translate="">Languages</div>
+          <div class="seperator">:</div>
+          <div class="value" tal:content="view/Languages"/>
       </div>
       <div class="agent-social" tal:condition="view/AgentSocialAvailable">
-        (Agent Social Share)
+        <ul>
+          <li tal:condition="view/FacebookLink">
+            <!-- Set FB Link -->
+            <a class="link social facebook" target="__blank" 
+              tal:content="string:Facebook"
+              tal:attributes="href view/FacebookLink"
+              />
+          </li>
+          <li tal:condition="view/TwitterLink">
+            <!-- Set Twitter Link -->
+            <a class="link social twitter" target="__blank" 
+              tal:content="string:Twitter"
+              tal:attributes="href view/TwitterLink"
+              />
+          </li>
+          <li tal:condition="view/YoutubeLink">
+            <!-- Set Youtube Link -->
+            <a class="link social youtube" target="__blank" 
+              tal:content="string:Youtube"
+              tal:attributes="href view/YoutubeLink"
+              />
+          </li>
+          <li tal:condition="view/GoogleLink">
+            <!-- Set Google Link -->
+            <a class="link social google" target="__blank" 
+              tal:content="string:Google+"
+              tal:attributes="href view/TwitterLink"
+              />
+          </li>
+          <li tal:condition="view/LinkedinLink">
+            <!-- Set LinkedIn Link -->
+            <a class="link social Linkedin" target="__blank" 
+              tal:content="string:LinkedIn"
+              tal:attributes="href view/LinkedinLink"
+              />
+          </li>
+        </ul>
       </div>
     </div>
   </section>
