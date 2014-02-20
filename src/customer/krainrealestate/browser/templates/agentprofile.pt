@@ -17,11 +17,57 @@
     <div class="agentprofile" tal:condition="view/AgentAvailable">
       <h2 tal:content="structure view/Title">(Full Name)</h2>
       <div class="agent-office" tal:condition="view/OfficeAvailable">
-        <div class="office_name" tal:content="view/OfficeName">(Office Name)</div>
-        <div class="office_adress" tal:content="view/OfficeAdress">(Office Adress)</div>
+        <div class="office_name label" tal:content="view/OfficeName">(Office Name)</div>
+        <div class="seperator">:</div>
+        <div class="office_adress value" tal:content="view/OfficeAdress">(Office Adress)</div>
       </div>
       <div class="agent-contact" tal:condition="view/AgentContactAvailable">
-        (Agent Contact Data)
+        <div class="office-phone" tal:condition="view/OfficePhone">
+          <div class="label" i18n:translate="">Office Phone</div>
+          <div class="seperator">:</div>
+          <div class="value" tal:content="view/OfficePhone"/>
+        </div>
+        <div class="us-line" tal:condition="view/USLine">
+          <div class="label" i18n:translate="">US Line</div>
+          <div class="seperator">:</div>
+          <div class="value" tal:content="view/USLine"/>
+        </div>
+        <div class="cell-phone" tal:condition="view/CellPhone">
+          <div class="label" i18n:translate="">Cell Phone</div>
+          <div class="seperator">:</div>
+          <div class="value" tal:content="view/CellPhone"/>
+        </div>
+        <div class="skype-name" tal:condition="view/SkypeName">
+          <div class="label" i18n:translate="">Skype Name</div>
+          <div class="seperator">:</div>
+          <div class="value" tal:content="view/SkypeName"/>
+        </div>
+        <div class="website" tal:define="website view/Website"
+          tal:condition="website">
+          <div class="label" i18n:translate="">Website</div>
+          <div class="seperator">:</div>
+          <div class="value">
+            <!-- Set Link to Agent Website -->
+            <a class="link" target="__blank" 
+              tal:content="website"
+              tal:attributes="href website"
+              /> 
+          </div>
+        </div>
+        <div class="agent-email"
+          tal:define="email view/AgentEmail"
+          tal:condition="email">
+          <div class="label" i18n:translate="">Email</div>
+          <div class="seperator">:</div>
+          <div class="value">
+            <!-- Set Link to mail the agent -->
+            <a class="link mailto" target="__blank" 
+              tal:content="email"
+              tal:attributes="href string:mailto:${email}"
+              /> 
+          </div>
+
+        </div>
       </div>
       <div class="agent-languages" tal:condition="view/AgentLanguagesAvailable" tal:content="structure view/Languages">
         (Agent Languages)

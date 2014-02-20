@@ -4,6 +4,8 @@
 #zope imports
 from Acquisition import aq_inner
 
+from urlparse import urlparse
+
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
@@ -62,6 +64,20 @@ class AgentProfileViewlet(ViewletBase):
         else:
             return absoluteURL(self.context, self.request) + '/'
 
+    def safeLink(self, url, absolute=True):
+        """check url string for evilness and give a False for empty strings or suspicios protocols"""
+        link = urlparse(url)
+
+        if len(link.netloc)==0 and len(link.path)==0:
+            return False
+        if len(link.scheme)==0:
+                return 'http://' + link.geturl();
+        if (link.scheme=='http' or link.scheme=='https'):
+                return link.geturl()
+        else:
+            return False
+
+
     @property
     def get_AgentId(self):
         """Get Agent ID"""
@@ -106,7 +122,60 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def AgentContactAvailable(self):
         """Agent Contact Info available?"""
-        return False
+        return True
+
+    @property
+    def OfficePhone(self):
+        """Return Agents office phone or False """
+        value = self.proptool('office_phone')
+        if len(value)>1:
+            return value
+        else:
+            return False
+
+    @property
+    def USLine(self):
+        """Return Agents 'US Line' or False """
+        value = self.proptool('us_line')
+        if len(value)>1:
+            return value
+        else:
+            return False
+
+    @property
+    def CellPhone(self):
+        """Return Agents cell phone nr. or False """
+        value = self.proptool('cell_phone')
+        if len(value)>1:
+            return value
+        else:
+            return False
+
+    @property
+    def SkypeName(self):
+        """Return Agents skype name or False """
+        value = self.proptool('skype_name')
+        if len(value)>1:
+            return value
+        else:
+         return False
+
+    @property
+    def Website(self):
+        """Return Agents website or False """
+        try:
+            return self.safeLink(self.proptool('home_page')) 
+        except:
+            return False
+
+    @property
+    def AgentEmail(self):
+        """Returns a mailto Link to the Agent or False """
+        value = self.proptool('email')
+        if len(value)>1:
+            return value
+        else:
+            return False
 
     @property
     def AgentLanguagesAvailable(self):
