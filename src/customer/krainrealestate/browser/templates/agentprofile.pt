@@ -11,7 +11,15 @@
 
     <div class="agentportrait" tal:condition="view/AgentPortraitAvailable">
       <div class="agent-avatar" tal:content="structure view/AgentPortrait">(Agent Avatar)</div>
-      <div class="agent-updates" tal:content="string:&nbsp;">(Receive Updates)</div>
+      <div class="agent-updates">
+        <!-- Set Link to mail the agent -->
+            <a class="link mailto" target="__blank" 
+              i18n:translate=""
+              tal:attributes="href string:mailto:${view/AgentEmail}"
+              >
+              Receive updates from me
+            </a>
+      </div>
     </div>
 
     <div class="agentprofile" tal:condition="view/AgentAvailable">
