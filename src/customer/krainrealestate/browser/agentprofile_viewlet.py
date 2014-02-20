@@ -142,7 +142,7 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def OfficePhone(self):
         """Return Agents office phone or False """
-        value = self.proptool('office_phone')
+        value = self.proptool('office_phone').strip()
         if len(value)>1:
             return value
         else:
@@ -151,7 +151,7 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def USLine(self):
         """Return Agents 'US Line' or False """
-        value = self.proptool('us_line')
+        value = self.proptool('us_line').strip()
         if len(value)>1:
             return value
         else:
@@ -160,7 +160,7 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def CellPhone(self):
         """Return Agents cell phone nr. or False """
-        value = self.proptool('cell_phone')
+        value = self.proptool('cell_phone').strip()
         if len(value)>1:
             return value
         else:
@@ -169,7 +169,7 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def SkypeName(self):
         """Return Agents skype name or False """
-        value = self.proptool('skype_name')
+        value = self.proptool('skype_name').strip()
         if len(value)>1:
             return value
         else:
@@ -179,14 +179,14 @@ class AgentProfileViewlet(ViewletBase):
     def Website(self):
         """Return Agents website or False """
         try:
-            return self.safeLink(self.proptool('home_page')) 
+            return self.safeLink(self.proptool('home_page').strip()) 
         except:
             return False
 
     @property
     def AgentEmail(self):
         """Returns a mailto Link to the Agent or False """
-        value = self.proptool('email')
+        value = self.proptool('email').strip()
         if len(value)>1:
             return value
         else:
@@ -195,7 +195,7 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def AgentLanguagesAvailable(self):
         """Languages available?"""
-        if(len(self.proptool('languages'))>0):
+        if(len(self.proptool('languages').strip())>0):
             return True
         else:
             return False
@@ -203,7 +203,7 @@ class AgentProfileViewlet(ViewletBase):
     @property
     def Languages(self):
         """"Deliver Languages of the Agent"""    
-        foo = self.proptool('languages')
+        foo = self.proptool('languages').strip()
         value = [] 
         if foo: 
             value = foo.split(',')
@@ -224,7 +224,7 @@ class AgentProfileViewlet(ViewletBase):
     def FacebookLink(self):
         """"Deliver Facebook of the Agent"""
         try:
-            value = self.proptool('social_fb')
+            value = self.proptool('social_fb').strip()
             if(len(value)>0):
                 return 'https://www.facebook.com/' + value
             else:
@@ -236,7 +236,7 @@ class AgentProfileViewlet(ViewletBase):
     def TwitterLink(self):
         """"Deliver Twitter of the Agent"""
         try:
-            value = self.proptool('social_twitter')
+            value = self.proptool('social_twitter').strip()
             if(len(value)>0):
                 return 'https://www.twitter.com/' + value
             else:
@@ -248,7 +248,7 @@ class AgentProfileViewlet(ViewletBase):
     def YoutubeLink(self):
         """"Deliver Youtube Account of the Agent"""
         try:
-            value = self.proptool('social_youtube')
+            value = self.proptool('social_youtube').strip()
             if(len(value)>0):
                 return 'http://www.youtube.com/user/' + value
             else:
@@ -260,7 +260,7 @@ class AgentProfileViewlet(ViewletBase):
     def GoogleLink(self):
         """"Deliver google+ Account of the Agent"""
         try:
-            value = self.proptool('social_google')
+            value = self.proptool('social_google').strip()
             if(len(value)>0):
                 return 'https://plus.google.com/' + value
             else:
@@ -272,7 +272,7 @@ class AgentProfileViewlet(ViewletBase):
     def LinkedinLink(self):
         """"Deliver LinkedIn profile of the Agent"""
         try:
-            value = self.proptool('social_linkedin')
+            value = self.proptool('social_linkedin').strip()
             if(len(value)>0):
                 return 'http://www.linkedin.com/' + value
             else:

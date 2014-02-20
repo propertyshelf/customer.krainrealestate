@@ -123,7 +123,7 @@
             <!-- Set Google Link -->
             <a class="link social google" target="__blank" 
               tal:content="string:Google+"
-              tal:attributes="href view/TwitterLink"
+              tal:attributes="href view/GoogleLink"
               />
           </li>
           <li tal:condition="view/LinkedinLink">
