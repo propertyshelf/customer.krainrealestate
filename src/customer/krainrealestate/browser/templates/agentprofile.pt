@@ -88,7 +88,7 @@
                             id python:lang.get('id');
                             label python: lang.get('native');
                             flag python:lang.get('flag');">
-                <div tal:attributes="class string:gentlanguage agentlanguage-${id}">
+                <div tal:attributes="class string:agentlanguage agentlanguage-${id}">
                   <img class="language-flag" tal:attributes="src flag" tal:condition="flag" />
                   <span class="language-label" tal:content="label"/>
                 </div>
