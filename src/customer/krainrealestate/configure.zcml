@@ -7,8 +7,6 @@
     i18n_domain="customer.krainrealestate">
 
 
-  <i18n:registerTranslations directory="locales" />
-
   <!-- Include package dependencies. -->
   <!-- ============================= -->
   <five:registerPackage package="." initialize=".initialize" />
