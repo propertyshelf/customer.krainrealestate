@@ -4,13 +4,11 @@
 #zope imports
 from Acquisition import aq_inner
 
-
 from plone.app.layout.viewlets.common import ViewletBase
 from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
 
-
-#local import
+#local imports
 from customer.krainrealestate.browser.interfaces import IKrainViewlets
 from customer.krainrealestate import _
 

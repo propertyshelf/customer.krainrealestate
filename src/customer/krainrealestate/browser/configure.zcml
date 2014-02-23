@@ -35,6 +35,18 @@
       template="templates/agentprofile.pt"
       />
 
+    <!-- Agent Search -->
+    <!-- ================ -->
+  <browser:viewlet
+      class=".agentsearch_viewlet.AgentSearchViewlet"
+      for=".agentsearch_viewlet.IAgentSearch"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+      name="customer.krainrealestate.agentsearch"
+      permission="zope2.View"
+      template="templates/agentprofile.pt"
+      />
+
 
   <browser:page
       class=".agentprofile_viewlet.AgentProfileStatus"
