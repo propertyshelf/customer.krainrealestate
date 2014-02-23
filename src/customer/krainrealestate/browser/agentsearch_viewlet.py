@@ -36,7 +36,7 @@ class AgentSearchViewlet(ViewletBase):
         context = aq_inner(self.context)
         self.membership = getToolByName(context, 'portal_membership')
 
-class AgentProfileStatus(object):
+class AgentSearchStatus(object):
     """Return activation/deactivation status of AgentProfile viewlet."""
 
     def __init__(self, context, request):
