@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="customer.krainrealestate"
+      tal:omit-tag="">
+  
+  <section class="agentsearch-wrapper viewlet"
+      tal:condition="view/available">
+    (Choose Your Agent)
+  </section>
+</html>

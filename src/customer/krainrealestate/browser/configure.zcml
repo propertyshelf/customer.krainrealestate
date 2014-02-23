@@ -44,7 +44,7 @@
       manager="plone.app.layout.viewlets.interfaces.IBelowContent"
       name="customer.krainrealestate.agentsearch"
       permission="zope2.View"
-      template="templates/agentprofile.pt"
+      template="templates/agentsearch.pt"
       />
 
 
