@@ -17,13 +17,14 @@
       name="default"
       title="customer.krainrealestate"
       directory="profiles/default"
-      description="Installs the customer.krainrealestate package"
+      description="Installs the awesome customer.krainrealestate package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   <!-- -*- extra stuff goes here -*- -->
   <!-- enable our viewlets for the BaseObject, for us: Pages -->
   <class class="Products.Archetypes.BaseObject.BaseObject">
     <implements interface="customer.krainrealestate.browser.agentprofile_viewlet.IPossibleAgentProfile" />
+    <implements interface="customer.krainrealestate.browser.agentsearch_viewlet.IPossibleAgentSearch" />
   </class>
   
 </configure>

@@ -7,7 +7,7 @@ from Acquisition import aq_inner
 from urlparse import urlparse
 
 from plone.app.layout.viewlets.common import ViewletBase
-from plone.memoize.view import memoize
+#from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
 
 from z3c.form import form,field, button

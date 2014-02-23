@@ -6,7 +6,7 @@ from Acquisition import aq_inner
 
 from plone.app.layout.viewlets.common import ViewletBase
 from Products.CMFCore.utils import getToolByName
-from zope.interface import Interface
+from zope.interface import Interface, alsoProvides, noLongerProvides
 
 #local imports
 from customer.krainrealestate.browser.interfaces import IKrainViewlets
@@ -35,3 +35,50 @@ class AgentSearchViewlet(ViewletBase):
 
         context = aq_inner(self.context)
         self.membership = getToolByName(context, 'portal_membership')
+
+class AgentProfileStatus(object):
+    """Return activation/deactivation status of AgentProfile viewlet."""
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    @property
+    def can_activate(self):
+        return IPossibleAgentSearch.providedBy(self.context) and \
+            not IAgentSearch.providedBy(self.context)
+
+    @property
+    def active(self):
+        return IAgentSearch.providedBy(self.context)
+
+
+class AgentSearchToggle(object):
+    """Toggle AgentSearch viewlet for the current context."""
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        msg_type = 'info'
+
+        if IAgentSearch.providedBy(self.context):
+            # Deactivate AgentProfile viewlet.
+            noLongerProvides(self.context, IAgentSearch)
+            self.context.reindexObject(idxs=['object_provides', ])
+            msg = _(u"'AgentSearch' viewlet deactivated.")
+        elif IPossibleAgentSearch.providedBy(self.context):
+            alsoProvides(self.context, IAgentSearch)
+            self.context.reindexObject(idxs=['object_provides', ])
+            msg = _(u"'AgentSearch' viewlet activated.")
+        else:
+            msg = _(
+                u"The 'AgentSearch' viewlet does't work with this content "
+                u"type. Add 'IPossibleAgentProfile' to the provided "
+                u"interfaces to enable this feature."
+            )
+            msg_type = 'error'
+
+        self.context.plone_utils.addPortalMessage(msg, msg_type)
+        self.request.response.redirect(self.context.absolute_url())
