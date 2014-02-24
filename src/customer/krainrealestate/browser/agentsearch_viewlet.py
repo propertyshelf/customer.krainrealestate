@@ -36,6 +36,15 @@ class AgentSearchViewlet(ViewletBase):
         context = aq_inner(self.context)
         self.membership = getToolByName(context, 'portal_membership')
 
+    def getAllAgents(self):
+        """Get all Plone users with the role Agent"""
+        agent_dict ={}
+        for member in self.membership.listMembers():
+            if member.has_role('Agent'):
+                agent_dict[member.getUserName()]=member.getUser()
+
+        return agent_dict
+
 class AgentSearchStatus(object):
     """Return activation/deactivation status of AgentProfile viewlet."""
 

@@ -9,5 +9,6 @@
   <section class="agentsearch-wrapper viewlet"
       tal:condition="view/available">
     (Choose Your Agent)
+    <p tal:content="structure view/getAllAgents" />
   </section>
 </html>
