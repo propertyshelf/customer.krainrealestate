@@ -36,13 +36,24 @@ class AgentSearchViewlet(ViewletBase):
         context = aq_inner(self.context)
         self.membership = getToolByName(context, 'portal_membership')
 
+    def _getAgentProfilePage(self, agent_id):
+        """Find the language-dependend AgentProfilePage"""
+        return '/en/agent/test'
+
+    @property
     def getAllAgents(self):
         """Get all Plone users with the role Agent"""
         agent_dict ={}
         for member in self.membership.listMembers():
             if member.has_role('Agent'):
-                agent_dict[member.getUserName()]=member.getUser()
-
+                agent_id = member.getUserName()
+                agent_dict[agent_id]={}
+                agent_dict[agent_id]['email'] = member.getProperty('email')
+                agent_dict[agent_id]['areas'] = member.getProperty('areas')
+                agent_dict[agent_id]['fullname'] = member.getProperty('fullname')
+                agent_dict[agent_id]['profile_page'] = self._getAgentProfilePage(agent_id)
+                agent_dict[agent_id]['agent_portrait'] = self.membership.getPersonalPortrait(id=agent_id)
+           
         return agent_dict
 
 class AgentSearchStatus(object):
