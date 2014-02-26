@@ -8,7 +8,32 @@
   
   <section class="agentsearch-wrapper viewlet"
       tal:condition="view/available">
-    (Choose Your Agent)
-    <p tal:content="structure view/getAllAgents" />
+    
+    <div tal:define="agents view/getAllAgents|nothing">
+      <tal:agents tal:repeat="agent agents">
+        <div class="agent">
+        <tal:agent
+          tal:define="my_agent python:agents.get(agent);
+                      id python:my_agent.get('id');
+                      portrait python: view.AgentPortrait(id);
+                      email python: my_agent.get('email');
+                      fullname python: my_agent.get('fullname');
+                      areas python: my_agent.get('areas');
+                      ">
+
+          <div class="agent-avatar" tal:content="structure portrait">(Agent Avatar)</div>
+          <div class="agent-name" tal:content="fullname">(Agent Fullname)</div>
+          <div class="agent-areas" tal:content="areas">(Agent Areas)</div>
+          <div class="agent-select" tal:condition="email">
+            <!-- Set Link to mail the agent -->
+            <a class="link mailto" target="__blank" 
+              i18n:translate=""
+              tal:attributes="href string:mailto:${email}">
+              Select Agent</a>
+          </div>
+        </tal:agent>
+        </div>
+      </tal:agents>
+    </div>
   </section>
 </html>

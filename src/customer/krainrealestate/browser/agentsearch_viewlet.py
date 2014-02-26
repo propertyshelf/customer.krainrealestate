@@ -40,6 +40,10 @@ class AgentSearchViewlet(ViewletBase):
         """Find the language-dependend AgentProfilePage"""
         return '/en/agent/test'
 
+    def AgentPortrait(self, agent_id):
+        """get Agents Portrait"""
+        return self.membership.getPersonalPortrait(id=agent_id)
+
     @property
     def getAllAgents(self):
         """Get all Plone users with the role Agent"""
@@ -51,13 +55,11 @@ class AgentSearchViewlet(ViewletBase):
                 agent_dict[agent_id]['email'] = member.getProperty('email')
                 agent_dict[agent_id]['areas'] = member.getProperty('areas')
                 agent_dict[agent_id]['fullname'] = member.getProperty('fullname')
-                agent_dict[agent_id]['profile_page'] = self._getAgentProfilePage(agent_id)
-                agent_dict[agent_id]['agent_portrait'] = self.membership.getPersonalPortrait(id=agent_id)
            
         return agent_dict
 
 class AgentSearchStatus(object):
-    """Return activation/deactivation status of AgentProfile viewlet."""
+    """Return activation/deactivation status of AgentSearch viewlet."""
 
     def __init__(self, context, request):
         self.context = context
