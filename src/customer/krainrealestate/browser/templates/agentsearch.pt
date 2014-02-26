@@ -8,8 +8,7 @@
   
   <section class="agentsearch-wrapper viewlet"
       tal:condition="view/available">
-    
-    <div tal:define="agents view/getAllAgents|nothing">
+    <div class="agent-wrapper" tal:define="agents view/getAllAgents|nothing">
       <tal:agents tal:repeat="agent agents">
         <div class="agent">
         <tal:agent
