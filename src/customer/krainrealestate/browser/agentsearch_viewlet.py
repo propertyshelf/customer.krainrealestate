@@ -53,10 +53,20 @@ class AgentSearchViewlet(ViewletBase):
                 agent_id = member.getUserName()
                 agent_dict[agent_id]={}
                 agent_dict[agent_id]['email'] = member.getProperty('email')
-                agent_dict[agent_id]['areas'] = member.getProperty('areas')
+                agent_dict[agent_id]['areas'] = self.__wrapAreas(member.getProperty('areas'))
                 agent_dict[agent_id]['fullname'] = member.getProperty('fullname')
            
         return agent_dict
+
+    def __wrapAreas(self, areas):
+        """wrap the areas for html display"""
+        areas_list = areas.strip().split('\n')
+        areas_html = ''
+        for value in areas_list:
+            areas_html = areas_html + '<span class="area-list-item">' + value +'</span>'
+        
+        return areas_html 
+
 
 class AgentSearchStatus(object):
     """Return activation/deactivation status of AgentSearch viewlet."""

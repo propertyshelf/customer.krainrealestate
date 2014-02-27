@@ -23,7 +23,7 @@
           <div class="agent-name" tal:content="fullname">(Agent Fullname)</div>
           <div class="agent-areas" tal:condition="areas">
             <span class="label" i18n:translate="" >areas serviced</span><span class="seperator">:</span>
-            <div class="area-list" tal:content="areas">(Agent Areas)</div>
+            <div class="area-list" tal:content="structure areas">(Agent Areas)</div>
           </div>
           <div class="agent-profilepage">
             <a i18n:translate="" href="#">Visit Agent Profile</a>
