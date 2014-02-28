@@ -87,8 +87,20 @@ class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
         return self.context.setMemberProperties({'social_google': value})
     social_google = property(get_social_google, set_social_google)
 
-    def get_social_linkedin(self):
-        return self.context.getProperty('social_linkedin', '')
-    def set_social_linkedin(self, value):
-        return self.context.setMemberProperties({'social_linkedin': value})
-    social_linkedin = property(get_social_linkedin, set_social_linkedin)
+    def get_agent_profile_en(self):
+        return self.context.getProperty('agent_profile_en', '')
+    def set_agent_profile_en(self, value):
+        return self.context.setMemberProperties({'agent_profile_en': value})
+    agent_profile_en = property(get_agent_profile_en, set_agent_profile_en)
+
+    def get_agent_profile_es(self):
+        return self.context.getProperty('agent_profile_es', '')
+    def set_agent_profile_es(self, value):
+        return self.context.setMemberProperties({'agent_profile_es': value})
+    agent_profile_es = property(get_agent_profile_es, set_agent_profile_es)
+
+    def get_agent_profile_de(self):
+        return self.context.getProperty('agent_profile_de', '')
+    def set_agent_profile_de(self, value):
+        return self.context.setMemberProperties({'agent_profile_de': value})
+    agent_profile_de = property(get_agent_profile_de, set_agent_profile_de)

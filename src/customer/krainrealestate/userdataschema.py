@@ -107,3 +107,21 @@ class IEnhancedUserDataSchema(IUserDataSchema):
                       default=u"Fill in public your LinkedIn Profile url (company/yourcompany, pub/yourname, ...)"),
         required=False,
         )
+    agent_profile_en = schema.TextLine(
+        title=_(u'label_profilepage_en', default=u'Agent Profile Page (en)'),
+        description=_(u'help_profilepage_en',
+                      default=u"English Agent Profile Page"),
+        required=False,
+        )
+    agent_profile_es = schema.TextLine(
+        title=_(u'label_profilepage_es', default=u'Agent Profile Page (es)'),
+        description=_(u'help_profilepage_es',
+                      default=u"Spanish Agent Profile Page"),
+        required=False,
+        )
+    agent_profile_de = schema.TextLine(
+        title=_(u'label_profilepage_de', default=u'Agent Profile Page (de)'),
+        description=_(u'help_profilepage_de',
+                      default=u"German Agent Profile Page"),
+        required=False,
+        )

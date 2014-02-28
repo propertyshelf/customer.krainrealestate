@@ -13,4 +13,7 @@
     <property name="social_youtube" type="string"></property>
     <property name="social_google" type="string"></property>
     <property name="social_linkedin" type="string"></property>
+    <property name="agent_profile_en" type="string"></property>
+    <property name="agent_profile_es" type="string"></property>
+    <property name="agent_profile_de" type="string"></property>
 </object>
