@@ -354,6 +354,11 @@ class IAgentProfileConfiguration(Interface):
             default=u'Please enter the Plone Member ID of the Agent',
         ),
     )
+    Set_LanguageDefault_ProfilePage = schema.Bool(
+        title=u'Set as default Profile Page for this language.',
+        required=False,
+        default = False       
+    )
 
 
 class AgentProfileConfiguration(form.Form):
@@ -376,9 +381,74 @@ class AgentProfileConfiguration(form.Form):
         if not errors:
             annotations = IAnnotations(self.context)
             annotations[CONFIGURATION_KEY] = data
+            if(data['Set_LanguageDefault_ProfilePage']):
+                self.__setProfilePage(data['agent_id'])
+
             self.request.response.redirect(absoluteURL(self.context,
                                                        self.request))
 
     @button.buttonAndHandler(_(u'Cancel'))
     def handle_cancel(self, action):
         self.request.response.redirect(absoluteURL(self.context, self.request))
+
+    
+    def language(self):
+        """ Get the language of the context.
+            @return: The two letter language code of the current content.
+        """
+        portal_state = self.context.unrestrictedTraverse("@@plone_portal_state")
+        return aq_inner(self.context).Language() or portal_state.default_language()
+
+    def __setProfilePage(self, agent_id):
+        """Set the Agents Profile Page for this language
+            -split @@params away from the views url
+
+            @return: True or False 
+        """
+        #prepare link destination
+        link_list = self.request['ACTUAL_URL'].split('@@')
+        link=link_list[0]
+        if not (len(link)):
+            msg = _(
+                u"We could not find a valid link to the Profile Page"
+            )
+            msg_type = 'error'
+            self.context.plone_utils.addPortalMessage(msg, msg_type)
+            return False
+
+        language = self.language()
+        # "field" is the language depending form field in the memberdata
+        if language =='en':
+            field = "agent_profile_en"
+        elif language =='es':
+            field = "agent_profile_es"
+        elif language =='de':
+            field = "agent_profile_de"
+        else:
+            msg = _(
+                u"Currently we don't support this content language for AgentProfile Pages"
+            )
+            msg_type = 'error'
+            self.context.plone_utils.addPortalMessage(msg, msg_type)
+            return False
+
+        #update the Agents Member data
+        if(len(agent_id)>0):   
+            membership = getToolByName(self.context, 'portal_membership')
+            member = membership.getMemberById(agent_id)
+            member.setMemberProperties(mapping={field:link})
+
+            msg = _(
+                u"Agents Profile Page updated!"
+            )
+            msg_type = 'info'
+            self.context.plone_utils.addPortalMessage(msg, msg_type)
+            return True
+
+        else:
+            msg = _(
+                u"No Agent Id found"
+            )
+            msg_type = 'error'
+            self.context.plone_utils.addPortalMessage(msg, msg_type)
+            return False
