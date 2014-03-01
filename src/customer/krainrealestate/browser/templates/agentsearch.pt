@@ -17,6 +17,7 @@
                       email python: my_agent.get('email');
                       fullname python: my_agent.get('fullname');
                       areas python: my_agent.get('areas');
+                      profile-url python: view.ProfileUrl(agent);
                       ">
           <div class="agent-avatar" tal:content="structure portrait">(Agent Avatar)</div>
           <div class="agent-name" tal:condition="fullname">
@@ -27,7 +28,7 @@
             <div class="area-list" tal:content="structure areas">(Agent Areas)</div>
           </div>
           <div class="agent-profilepage">
-            <a i18n:translate="" href="#">Visit Agent Profile</a>
+            <a i18n:translate="" href="#" tal:attributes="href profile-url">Visit Agent Profile</a>
           </div>
           <div class="agent-select" tal:condition="email">
             <!-- Set Link to mail the agent -->

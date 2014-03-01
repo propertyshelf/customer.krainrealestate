@@ -391,7 +391,7 @@ class AgentProfileConfiguration(form.Form):
     def handle_cancel(self, action):
         self.request.response.redirect(absoluteURL(self.context, self.request))
 
-    
+    @property
     def language(self):
         """ Get the language of the context.
             @return: The two letter language code of the current content.
