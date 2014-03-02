@@ -36,8 +36,10 @@ class AgentSearchViewlet(ViewletBase):
         context = aq_inner(self.context)
         self.membership = getToolByName(context, 'portal_membership')
 
-    def __getAgentProfilePage(self, agent_id):
-        """Find the language-dependend AgentProfilePage"""
+    def __getAgentProfilePage(self, agent_id=''):
+        """Find the language-dependend AgentProfilePage
+            @return: ProfilePage object or False
+        """
         language = self.language()
         # "field" is the language depending form field in the memberdata
         if language =='en':
@@ -53,8 +55,43 @@ class AgentSearchViewlet(ViewletBase):
             msg_type = 'info'
             self.context.plone_utils.addPortalMessage(msg, msg_type)
             field = "agent_profile_en"
-            
-        return '/en/agent/test'
+
+        if(len(agent_id)>0):   
+            membership = getToolByName(self.context, 'portal_membership')
+            agent = membership.getMemberById(agent_id)
+            ProfileAgent = {}
+            profile_link = agent.getProperty(field)
+
+            if(len(profile_link)>0):
+                ProfileAgent['status'] = 'normal'
+                ProfileAgent['url'] = profile_link
+                ProfileAgent['language'] = language
+                return ProfileAgent
+
+            else:
+                ProfileAgent['status'] = 'fallback'
+
+                if(len(agent.getProperty("agent_profile_en"))>0):
+                    ProfileAgent['url'] = agent.getProperty("agent_profile_en")
+                    ProfileAgent['language'] = 'en'
+                    return ProfileAgent
+
+                if(len(agent.getProperty("agent_profile_es"))>0):
+                    ProfileAgent['url'] = agent.getProperty("agent_profile_es")
+                    ProfileAgent['language'] = 'es'
+                    return ProfileAgent
+
+                if(len(agent.getProperty("agent_profile_de"))>0):
+                    ProfileAgent['url'] = agent.getProperty("agent_profile_de")
+                    ProfileAgent['language'] = 'de'
+                    return ProfileAgent
+
+                #we dont have a normal or fallback page, return False
+                return False
+
+        else:
+            return False
+
 
     def AgentPortrait(self, agent_id):
         """get Agents Portrait"""
@@ -63,6 +100,16 @@ class AgentSearchViewlet(ViewletBase):
     def ProfileUrl(self, agent_id):
         """get the URL to the Agents Profile Page"""
         return self.__getAgentProfilePage(agent_id)
+
+    def AgentProfileAvailable(self, agent_id):
+        """Does the Agent have a profile page in this language?"""
+        membership = getToolByName(self.context, 'portal_membership')
+        agent = membership.getMemberById(agent_id)
+
+        if(len(agent.getProperty("agent_profile_en"))>0 or len(agent.getProperty("agent_profile_es"))>0 or len(agent.getProperty("agent_profile_de"))>0):    
+            return True
+        else:
+            return False
 
     @property
     def getAllAgents(self):
