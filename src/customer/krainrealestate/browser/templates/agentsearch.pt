@@ -11,6 +11,7 @@
     <div class="agent-wrapper" tal:define="agents view/getAllAgents|nothing">
       <tal:agents tal:repeat="agent agents">
         <div class="agent">
+
         <tal:agent
           tal:define="my_agent python:agents.get(agent);
                       portrait python: view.AgentPortrait(agent);
@@ -27,13 +28,15 @@
             <span class="label" i18n:translate="" >areas serviced</span><span class="seperator">:</span>
             <div class="area-list" tal:content="structure areas">(Agent Areas)</div>
           </div>
-          <div class="agent-profilepage" tal:condition="view/AgentProfileAvailable"
-              tal:define="profile-url python: ProfilePage.get('url');
-                          profile-status python: ProfilePage.get('status');
-                          profile-lang python: ProfilePage.get('language');">
-            <a i18n:translate="" href="#" tal:attributes="href profile-url;
-                                                          class profile-status;">Visit Agent Profile</a>
+          <div class="agent-profilepage" tal:condition="ProfilePage">
+            <div tal:define=" profile_url python: ProfilePage.get('url');
+                              profile_status python: ProfilePage.get('status');
+                              profile_lang python: ProfilePage.get('language');">
+              <a i18n:translate="" href="#" tal:attributes="href profile_url;
+                                                            class profile_status;">Visit Agent Profile</a>
+            </div>
           </div>
+
           <div class="agent-select" tal:condition="email">
             <!-- Set Link to mail the agent -->
             <a class="link mailto" target="__blank" 

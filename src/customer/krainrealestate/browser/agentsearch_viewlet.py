@@ -40,7 +40,7 @@ class AgentSearchViewlet(ViewletBase):
         """Find the language-dependend AgentProfilePage
             @return: ProfilePage object or False
         """
-        language = self.language()
+        language = self.language
         # "field" is the language depending form field in the memberdata
         if language =='en':
             field = "agent_profile_en"
