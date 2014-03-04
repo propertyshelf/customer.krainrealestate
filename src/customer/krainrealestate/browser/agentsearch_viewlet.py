@@ -130,7 +130,8 @@ class AgentSearchViewlet(ViewletBase):
         areas_list = areas.strip().split('\n')
         areas_html = ''
         for value in areas_list:
-            areas_html = areas_html + '<span class="area-list-item">' + value +'</span>'
+            if len(value)>0:
+                areas_html = areas_html + '<span class="area-list-item">' + value +'</span>'
         
         return areas_html
 
