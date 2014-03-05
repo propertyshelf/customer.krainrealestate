@@ -16,112 +16,112 @@ msgstr ""
 
 #: ./browser/agentprofile_viewlet.py:335
 msgid "'AgentProfile' viewlet activated."
-msgstr ""
+msgstr "'AgentProfile' viewlet wurde aktiviert."
 
 #: ./browser/agentprofile_viewlet.py:331
 msgid "'AgentProfile' viewlet deactivated."
-msgstr ""
+msgstr "'AgentProfile' viewlet wurde deaktiviert."
 
 #: ./browser/agentsearch_viewlet.py:182
 msgid "'AgentSearch' viewlet activated."
-msgstr ""
+msgstr "'AgentSearch' viewlet wurde aktiviert."
 
 #: ./browser/agentsearch_viewlet.py:178
 msgid "'AgentSearch' viewlet deactivated."
-msgstr ""
+msgstr "'AgentSearch' viewlet wurde deaktiviert"
 
 #: ./profiles/default/actions.xml
 msgid "Activate 'Choose Agent'"
-msgstr ""
+msgstr "Aktiviere 'Waehle Agenten'('Choose Agent')"
 
 #: ./profiles/default/actions.xml
 msgid "Activate Agent Profile"
-msgstr ""
+msgstr "Aktiviere Agenten Profile"
 
 #: ./profiles/default/actions.xml
 msgid "Activate the 'Choose Agent' viewlet."
-msgstr ""
+msgstr "Aktiviere 'Agenten waehlen'"
 
 #: ./profiles/default/actions.xml
 msgid "Activate the Agent Profile viewlet."
-msgstr ""
+msgstr "Aktiviere die Agenten Profil Seite"
 
 #: ./browser/agentprofile_viewlet.py:369
 msgid "Adjust the AgentProfile ID of this Page."
-msgstr ""
+msgstr "Passen Sie die ID des Agenten an."
 
 #. Default: "Please enter the Plone Member ID of the Agent"
 #: ./browser/agentprofile_viewlet.py:352
 msgid "Agent ID"
-msgstr ""
+msgstr "Agenten ID"
 
 #: ./browser/agentprofile_viewlet.py:442
 msgid "Agents Profile Page updated!"
-msgstr ""
+msgstr "Agenten Profil Seite aktualisiert"
 
 #: ./browser/agentprofile_viewlet.py:390
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: ./browser/templates/agentprofile.pt:44
 msgid "Cell Phone"
-msgstr ""
+msgstr "Handy"
 
 #: ./profiles/default/actions.xml
 msgid "Change Agent ID"
-msgstr ""
+msgstr "Aendere Agenten ID"
 
 #: ./browser/agentprofile_viewlet.py:429
 msgid "Currently we don't support this content language for AgentProfile Pages"
-msgstr ""
+msgstr "Entschuldigung. Momentan unsterstuetzen wir diese Sprache nicht fuer Ageneten Profil Seiten"
 
 #: ./profiles/default/actions.xml
 msgid "Deactivate 'Choose Agent'"
-msgstr ""
+msgstr "Deaktiviere 'Agent waehlen'"
 
 #: ./profiles/default/actions.xml
 msgid "Deactivate Agent Profile"
-msgstr ""
+msgstr "Deaktiviere Agenten Profil Seite"
 
 #: ./profiles/default/actions.xml
 msgid "Deactivate the 'Choose Agent' viewlet."
-msgstr ""
+msgstr "Deaktiviere 'Agenten waehlen' Seite"
 
 #: ./profiles/default/actions.xml
 msgid "Deactivate the Agent Profile viewlet."
-msgstr ""
+msgstr "Deaktiviere die Agenten Profil Seite"
 
 #: ./browser/templates/agentprofile.pt:68
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: ./browser/templates/agentprofile.pt:82
 msgid "Languages"
-msgstr ""
+msgstr "Sprachen"
 
 #: ./browser/agentprofile_viewlet.py:450
 msgid "No Agent Id found"
-msgstr ""
+msgstr "Keine Agenten ID gefunden"
 
 #: ./browser/templates/agentprofile.pt:34
 msgid "Office Phone"
-msgstr ""
+msgstr "Telefon Büro "
 
 #: ./browser/templates/agentprofile.pt:16
 msgid "Receive updates from me"
-msgstr ""
+msgstr "Erhalten sie Neuigkeiten von mir."
 
 #: ./browser/agentprofile_viewlet.py:378
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ./browser/templates/agentsearch.pt:43
 msgid "Select Agent"
-msgstr ""
+msgstr "Agenten wählen"
 
 #: ./browser/templates/agentprofile.pt:49
 msgid "Skype Name"
-msgstr ""
+msgstr "Skype Name"
 
 #: ./browser/agentprofile_viewlet.py:337
 msgid "The 'AgentProfile' viewlet does't work with this content type. Add 'IPossibleAgentProfile' to the provided interfaces to enable this feature."
@@ -133,71 +133,71 @@ msgstr ""
 
 #: ./browser/templates/agentprofile.pt:39
 msgid "US Line"
-msgstr ""
+msgstr "Telefon U.S."
 
 #: ./browser/templates/agentsearch.pt:36
 msgid "Visit Agent Profile"
-msgstr ""
+msgstr "Besuchen sie das Agenten Profil"
 
 #: ./browser/agentprofile_viewlet.py:412
 msgid "We could not find a valid link to the Profile Page"
-msgstr ""
+msgstr "Wir konnten keinen gültigen Link yur Profil Seite finden "
 
 #: ./browser/templates/agentprofile.pt:55
 msgid "Website"
-msgstr ""
+msgstr "Webseite"
 
 #: ./browser/agentsearch_viewlet.py:52
 msgid "Your Language is not supported yet. As fallback we will use the english version"
-msgstr ""
+msgstr "Ihre Sprache is noch nicht unterstütyt. Wir werden englisch stattdessen benutzen"
 
 #: ./browser/templates/agentsearch.pt:29
 msgid "areas serviced"
-msgstr ""
+msgstr "betreute Standorte"
 
 #: ./browser/agentprofile_viewlet.py:368
 msgid "change 'Agent Profile'"
-msgstr ""
+msgstr "ändere Agenten Profil"
 
 #. Default: "In which areas are you active? This will be visible on the agent pages."
 #: ./userdataschema.py:69
 msgid "help_areas"
-msgstr ""
+msgstr "Wo sind sie aktiv? Die Angaben sind in der Agenten Übersicht sichtbar"
 
 #. Default: "Fill in your cell phone nr."
 #: ./userdataschema.py:57
 msgid "help_cell_phone"
-msgstr ""
+msgstr "Ihre Handz nummer"
 
 #. Default: "Fill in your Facebook name"
 #: ./userdataschema.py:82
 msgid "help_facebook_name"
-msgstr ""
+msgstr "Ihr Facebook Name"
 
 #. Default: "Fill in your google g+ name"
 #: ./userdataschema.py:100
 msgid "help_google_name"
-msgstr ""
+msgstr "Ihr google plus account name"
 
 #. Default: "In which languages you can speak with customers?"
 #: ./userdataschema.py:75
 msgid "help_languages"
-msgstr ""
+msgstr "In welchen Sprachen können sie mit den Kunden sprechen?"
 
 #. Default: "Fill in public your LinkedIn Profile url (company/yourcompany, pub/yourname, ...)"
 #: ./userdataschema.py:106
 msgid "help_linkedin_url"
-msgstr ""
+msgstr "Geben Sie ihre LinkedIn Profile url (company/ihrefirma, pub/ihrname, ...) an"
 
 #. Default: "Fill in the adress of your office."
 #: ./userdataschema.py:39
 msgid "help_office_adress"
-msgstr ""
+msgstr "Bitte die Adresse ihres Büros eingeben."
 
 #. Default: "Fill in the name of the Office your are working for."
 #: ./userdataschema.py:33
 msgid "help_office_name"
-msgstr ""
+msgstr "Bitte geben Sie den Namen ihres Büros an"
 
 #. Default: "Fill in your phone number in the office."
 #: ./userdataschema.py:45
