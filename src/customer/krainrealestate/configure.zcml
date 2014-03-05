@@ -12,6 +12,7 @@
   <five:registerPackage package="." initialize=".initialize" />
   <includeDependencies package="." />
   <include package=".browser" />
+  <i18n:registerTranslations directory="locales" />
 
   <genericsetup:registerProfile
       name="default"
