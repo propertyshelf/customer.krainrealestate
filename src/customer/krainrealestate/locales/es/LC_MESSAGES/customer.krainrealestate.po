@@ -65,7 +65,7 @@ msgstr ""
 
 #: ./browser/templates/agentprofile.pt:44
 msgid "Cell Phone"
-msgstr ""
+msgstr "Telefono Celular"
 
 #: ./profiles/default/actions.xml
 msgid "Change Agent ID"
@@ -93,11 +93,11 @@ msgstr ""
 
 #: ./browser/templates/agentprofile.pt:68
 msgid "Email"
-msgstr ""
+msgstr "Correo Electrónico"
 
 #: ./browser/templates/agentprofile.pt:82
 msgid "Languages"
-msgstr ""
+msgstr "Idiomas"
 
 #: ./browser/agentprofile_viewlet.py:450
 msgid "No Agent Id found"
@@ -105,11 +105,11 @@ msgstr ""
 
 #: ./browser/templates/agentprofile.pt:34
 msgid "Office Phone"
-msgstr ""
+msgstr "Telefono Oficina"
 
 #: ./browser/templates/agentprofile.pt:16
 msgid "Receive updates from me"
-msgstr ""
+msgstr "Subscribirse para recibir actualizaciones"
 
 #: ./browser/agentprofile_viewlet.py:378
 msgid "Save"
@@ -117,11 +117,11 @@ msgstr ""
 
 #: ./browser/templates/agentsearch.pt:43
 msgid "Select Agent"
-msgstr ""
+msgstr "Selecione Agente"
 
 #: ./browser/templates/agentprofile.pt:49
 msgid "Skype Name"
-msgstr ""
+msgstr "Usuario de Skype"
 
 #: ./browser/agentprofile_viewlet.py:337
 msgid "The 'AgentProfile' viewlet does't work with this content type. Add 'IPossibleAgentProfile' to the provided interfaces to enable this feature."
@@ -133,11 +133,11 @@ msgstr ""
 
 #: ./browser/templates/agentprofile.pt:39
 msgid "US Line"
-msgstr ""
+msgstr "Numero de EE.UU"
 
 #: ./browser/templates/agentsearch.pt:36
 msgid "Visit Agent Profile"
-msgstr ""
+msgstr "Visite Perfil del Agente"
 
 #: ./browser/agentprofile_viewlet.py:412
 msgid "We could not find a valid link to the Profile Page"
@@ -145,7 +145,7 @@ msgstr ""
 
 #: ./browser/templates/agentprofile.pt:55
 msgid "Website"
-msgstr ""
+msgstr "Pagina Web"
 
 #: ./browser/agentsearch_viewlet.py:52
 msgid "Your Language is not supported yet. As fallback we will use the english version"
@@ -153,7 +153,7 @@ msgstr ""
 
 #: ./browser/templates/agentsearch.pt:29
 msgid "areas serviced"
-msgstr ""
+msgstr "Lugares de Servicio"
 
 #: ./browser/agentprofile_viewlet.py:368
 msgid "change 'Agent Profile'"
@@ -318,4 +318,3 @@ msgstr ""
 #: ./userdataschema.py:93
 msgid "label_youtube_chanel"
 msgstr ""
-
