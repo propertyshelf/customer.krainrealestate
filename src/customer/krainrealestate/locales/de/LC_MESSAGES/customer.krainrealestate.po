@@ -202,37 +202,38 @@ msgstr "Bitte geben Sie den Namen ihres Büros an"
 #. Default: "Fill in your phone number in the office."
 #: ./userdataschema.py:45
 msgid "help_office_phone"
-msgstr ""
+msgstr "Bitte geben Sie die Telefonnummer ihres Büros an"
+
 
 #. Default: "German Agent Profile Page"
 #: ./userdataschema.py:124
 msgid "help_profilepage_de"
-msgstr ""
+msgstr "Deutsche Agenten Profil Seite"
 
 #. Default: "English Agent Profile Page"
 #: ./userdataschema.py:112
 msgid "help_profilepage_en"
-msgstr ""
+msgstr "Englische Agenten Profil Seite"
 
 #. Default: "Spanish Agent Profile Page"
 #: ./userdataschema.py:118
 msgid "help_profilepage_es"
-msgstr ""
+msgstr "Spanische Agenten Profil Seite"
 
 #. Default: "Fill in your Skype name"
 #: ./userdataschema.py:63
 msgid "help_skype_name"
-msgstr ""
+msgstr "Ihr Skype Name"
 
 #. Default: "Fill in your twitter name"
 #: ./userdataschema.py:88
 msgid "help_twitter_name"
-msgstr ""
+msgstr "Ihr Twitter Name"
 
 #. Default: "Fill in your U.S. Line phone nr."
 #: ./userdataschema.py:51
 msgid "help_us_line"
-msgstr ""
+msgstr "Geben sie ihre U.S. Telefonnummer an"
 
 #. Default: "Fill in your youtube chanel name"
 #: ./userdataschema.py:94
@@ -242,7 +243,7 @@ msgstr ""
 #. Default: "Type the areas you service"
 #: ./userdataschema.py:68
 msgid "label_areas"
-msgstr ""
+msgstr "Geben Sie die"
 
 #. Default: "Cell Phone"
 #: ./userdataschema.py:56
