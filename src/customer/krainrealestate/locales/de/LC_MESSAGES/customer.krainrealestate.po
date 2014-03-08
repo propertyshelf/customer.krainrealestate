@@ -105,7 +105,7 @@ msgstr "Keine Agenten ID gefunden"
 
 #: ./browser/templates/agentprofile.pt:34
 msgid "Office Phone"
-msgstr "Telefon Büro "
+msgstr "Telefon Büro"
 
 #: ./browser/templates/agentprofile.pt:16
 msgid "Receive updates from me"
@@ -303,17 +303,17 @@ msgstr ""
 #. Default: "Skype Name"
 #: ./userdataschema.py:62
 msgid "label_skype_name"
-msgstr ""
+msgstr "Ihr Skype Name"
 
 #. Default: "Twitter Name"
 #: ./userdataschema.py:87
 msgid "label_twitter_name"
-msgstr ""
+msgstr "Ihr Twitter Name"
 
 #. Default: "U.S. Line"
 #: ./userdataschema.py:50
 msgid "label_us_line"
-msgstr ""
+msgstr "Amerikanische Telefon nummer"
 
 #. Default: "Youtube Chanel"
 #: ./userdataschema.py:93
