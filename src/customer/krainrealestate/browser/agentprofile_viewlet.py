@@ -23,14 +23,14 @@ from customer.krainrealestate import _
 CONFIGURATION_KEY = 'customer.krainrealestate.agentprofile'
 
 class IPossibleAgentProfile(Interface):
-    """Marker interface for possible HeaderPlugin viewlet."""
+    """Marker interface for possible AgentProfile viewlet."""
 
 class IAgentProfile(IKrainViewlets):
-    """Marker interface for HeaderPlugin viewlet."""
+    """Marker interface for AgentProfile viewlet."""
 
 
 class AgentProfileViewlet(ViewletBase):
-    """Show Header plugins."""
+    """Show AgentProfile"""
 
     @property
     def available(self):
