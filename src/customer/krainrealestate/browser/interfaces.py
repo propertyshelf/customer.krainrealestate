@@ -12,3 +12,6 @@ class IKrainRealestate(IDefaultPloneLayer):
 
 class IKrainViewlets(Interface):
     """Marker Interface for the customer specific Viewlets"""
+
+class IAgentFolder(Interface):
+    """Marker Interface to identify AgentFolders"""
