@@ -7,6 +7,7 @@ from Acquisition import aq_inner
 from urlparse import urlparse
 
 from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.layout.navigation.interfaces import INavigationRoot
 #from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
 
@@ -17,7 +18,7 @@ from zope.interface import Interface, alsoProvides, noLongerProvides
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 #local import
-from customer.krainrealestate.browser.interfaces import IKrainViewlets
+from customer.krainrealestate.browser.interfaces import IKrainViewlets, IAgentFolder
 from customer.krainrealestate import _
 
 CONFIGURATION_KEY = 'customer.krainrealestate.agentprofile'
@@ -328,10 +329,34 @@ class AgentProfileToggle(object):
             # Deactivate AgentProfile viewlet.
             noLongerProvides(self.context, IAgentProfile)
             self.context.reindexObject(idxs=['object_provides', ])
+            # unset marker interface for parent folder
+            pf = self.context.aq_parent
+            noLongerProvides(pf, IAgentFolder)
+            pf.reindexObject(idxs=['object_provides', ])
+
             msg = _(u"'AgentProfile' viewlet deactivated.")
         elif IPossibleAgentProfile.providedBy(self.context):
             alsoProvides(self.context, IAgentProfile)
             self.context.reindexObject(idxs=['object_provides', ])
+            # set marker interface for parent folder
+            pf = self.context.aq_parent
+            if INavigationRoot.providedBy(pf):
+                """set message for incorrect parent folder"""
+                pf_warn = _(
+                    u"The AgentFolder setting could not be set "
+                    u"bcause the Navigation root was found as parent folder."
+                    u"Please make sure you work in the correct location!"
+
+                )
+                self.context.plone_utils.addPortalMessage(pf_warn, 'error')
+            else:
+                alsoProvides(pf, IAgentFolder)
+                pf.reindexObject(idxs=['object_provides', ])
+                pf_suc = _(
+                    u"Agentfolder updated!"
+                )
+                self.context.plone_utils.addPortalMessage(pf_suc, 'info')
+
             msg = _(u"'AgentProfile' viewlet activated.")
         else:
             msg = _(
