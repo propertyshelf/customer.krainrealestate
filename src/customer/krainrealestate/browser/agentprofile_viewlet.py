@@ -335,6 +335,7 @@ class AgentProfileToggle(object):
             pf.reindexObject(idxs=['object_provides', ])
 
             msg = _(u"'AgentProfile' viewlet deactivated.")
+            
         elif IPossibleAgentProfile.providedBy(self.context):
             alsoProvides(self.context, IAgentProfile)
             self.context.reindexObject(idxs=['object_provides', ])

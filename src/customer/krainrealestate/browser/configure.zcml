@@ -5,9 +5,8 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="customer.krainrealestate">
 
-
  <browser:page
-    for="Products.CMFPlone.Portal.PloneSite"
+    for="*"
     layer=".interfaces.IKrainRealestate"
     name="personal-information"
     class=".CustomizedUserDataPanel.CustomizedUserDataPanel"

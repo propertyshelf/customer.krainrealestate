@@ -4,6 +4,7 @@ from plone.app.users.browser.personalpreferences import UserDataPanelAdapter
 
 class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
     """Custom Memberdata Adapter"""
+
     def get_office_name(self):
         return unicode(str(self.context.getProperty('office_name', '')), 'utf-8')
     def set_office_name(self, value):
