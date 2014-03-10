@@ -5,6 +5,7 @@ from Acquisition import aq_inner
 from plone.app.users.browser.personalpreferences import UserDataPanel
 from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
+from zope.component import getMultiAdapter
 
 from customer.krainrealestate.browser.agentprofile_viewlet import IAgentProfile
 
@@ -21,9 +22,15 @@ class CustomizedUserDataPanel(UserDataPanel):
         """ implementing plone.app.users.browser.interfaces._on_save function
             for custom event handling
         """
-
-        membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
-        agent = membershiptool.getMemberById(self.userid)
+        
+        if len(self.userid):
+            #if we have a userid, use this as agent
+            membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
+            agent = membershiptool.getMemberById(self.userid)
+        else:
+            portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
+            agent = portal_state.member()
+            self.userid = agent.id
 
         if agent.has_role('Agent'):
             #custom save action only for "Agent" group
@@ -37,14 +44,13 @@ class CustomizedUserDataPanel(UserDataPanel):
         """Override Annotation for plone.mls.listing AgentInfo inside AgentProfilePages"""
         pprint(folders)
         pprint(data)
-        
+        pprint(self.userid)
 
     def _get_AgentProfileFolders(self):
         """get all the Agents Folders
             @return: list of Agent folders for given agent, empty list for invalid
         """
         agent_id = self.userid
-
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
         #look for all Agentprofile pages
@@ -62,5 +68,5 @@ class CustomizedUserDataPanel(UserDataPanel):
                 #my_pages.append(pp_obj)
                 #get parent folders
                 my_parents.append(pp_obj.aq_parent)
-      
+        
         return my_parents
