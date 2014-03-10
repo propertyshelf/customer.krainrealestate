@@ -6,7 +6,7 @@
     i18n_domain="customer.krainrealestate">
 
  <browser:page
-    for="*"
+    for="plone.app.layout.navigation.interfaces.INavigationRoot"
     layer=".interfaces.IKrainRealestate"
     name="personal-information"
     class=".CustomizedUserDataPanel.CustomizedUserDataPanel"
