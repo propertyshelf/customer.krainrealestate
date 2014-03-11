@@ -36,7 +36,6 @@ class CustomizedUserDataPanel(UserDataPanel):
             #custom save action only for "Agent" group
             pprint('User Data saved, hook is hooking for: ' + self.userid)
             agent_folders = self._get_AgentProfileFolders()
-            pprint(agent_folders) 
             if len(agent_folders):
                 self._update_AgentInfoPortlet_ProfilePage(agent_folders, data)
 
