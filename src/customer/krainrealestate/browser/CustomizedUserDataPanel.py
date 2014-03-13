@@ -3,27 +3,31 @@
 
 from Acquisition import aq_inner
 from plone.app.users.browser.personalpreferences import UserDataPanel
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, getUtility
 
+#local imports
 from customer.krainrealestate.browser.agentprofile_viewlet import IAgentProfile
 from customer.krainrealestate.browser.interfaces import IAgentFolder
 
+# try to import plone.mls.listing interfaces for ps specific functions
 try:
-    from plone.mls.listing.interfaces import ILocalAgencyInfo
+    from plone.mls.listing.interfaces import (
+        ILocalAgencyInfo,
+        IMLSAgencyContactInformation,
+    )
     ps_mls = True
 except:
     ps_mls = False
 
-from pprint import pprint
 
 class CustomizedUserDataPanel(UserDataPanel):
     """ Hide certain form fields in the UserDataPanel """
     def __init__(self, context, request):
         super(CustomizedUserDataPanel, self).__init__(context, request)
         self.form_fields = self.form_fields.omit('location', 'description','agent_profile_en', 'agent_profile_es', 'agent_profile_de')
-
     
     def _on_save(self, data):
         """ implementing plone.app.users.browser.interfaces._on_save function
@@ -42,34 +46,52 @@ class CustomizedUserDataPanel(UserDataPanel):
 
         if ps_mls and agent.has_role('Agent'):
             #custom save action only for "Agent" group
-            pprint('User Data saved, hook is hooking for: ' + self.userid)
             agent_folders = self._get_AgentProfileFolders
             if len(agent_folders):
                 self._update_AgentInfoPortlet_ProfilePage(agent_folders, data)
 
     def _update_AgentInfoPortlet_ProfilePage(self, folders, data):
         """Override Annotation for plone.mls.listing AgentInfo inside AgentProfilePages"""
-        pprint(folders)
-        pprint(data)
-        pprint(self.userid)
         #get agents portrait/ avatar url
         membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
         avatar_url = membershiptool.getPersonalPortrait(id=self.userid).absolute_url()
+        #get AgencyInfo
+        agency = self.__AgencyInfo
        
         for folder in folders:
             if IAgentFolder.providedBy(folder) and ILocalAgencyInfo.providedBy(folder):
-                pprint('update folder:')
-                pprint(folder)
-
+                #get annotations for this folder
                 mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", {})
-
-                mls_ano['agency_name'] = 'Krain Real Estate'
+                # set global Agency Info
+                mls_ano['agency_name'] = agency.get('agency_name', u'Krain Real Estate')
+                mls_ano['agency_logo_url'] = agency.get('agency_logo_url', u'')
+                mls_ano['agency_office_phone'] = agency.get('agency_office_phone', u'')
+                mls_ano['agency_website'] = agency.get('agency_website', u'')
+                
+                #Agent Info
                 mls_ano['agent_name'] = data.get('fullname', u'')
                 mls_ano['agent_office_phone'] = data.get('office_phone', u'')
                 mls_ano['agent_cell_phone'] = data.get('cell_phone', u'')
                 mls_ano['agent_email'] = data.get('email', u'')
                 mls_ano['agent_avatar_url'] = avatar_url
 
+    @property
+    def __AgencyInfo(self):
+        """Get global Agency Info from Config"""
+        settings = {}
+        registry = getUtility(IRegistry)
+    
+        if registry is not None:
+            try:
+                registry_settings = registry.forInterface(IMLSAgencyContactInformation)
+            except:
+                print('Global agency information not available.')
+            else:
+                settings = dict([
+                    (a, getattr(registry_settings, a)) for a in
+                    registry_settings.__schema__]
+                )
+        return settings
            
     @property
     def _get_AgentProfileFolders(self):
