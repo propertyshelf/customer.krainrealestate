@@ -51,16 +51,25 @@ class CustomizedUserDataPanel(UserDataPanel):
         pprint(folders)
         pprint(data)
         pprint(self.userid)
-
+        #get agents portrait/ avatar url
+        membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
+        avatar_url = membershiptool.getPersonalPortrait(id=self.userid).absolute_url()
+       
         for folder in folders:
-            pprint(folder)
             if IAgentFolder.providedBy(folder) and ILocalAgencyInfo.providedBy(folder):
-                pprint('valid folder to update')
+                pprint('update folder:')
+                pprint(folder)
+                
                 mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", {})
-                pprint(mls_ano)
 
-            else:
-                print 'Invalid Folder'
+                mls_ano['agency_name'] = 'Krain Real Estate'
+                mls_ano['agent_name'] = data.get('fullname', u'')
+                mls_ano['agent_office_phone'] = data.get('office_phone', u'')
+                mls_ano['agent_cell_phone'] = data.get('cell_phone', u'')
+                mls_ano['agent_email'] = data.get('email', u'')
+                mls_ano['agent_avatar_url'] = avatar_url
+
+           
 
     def _get_AgentProfileFolders(self):
         """get all the Agents Folders
