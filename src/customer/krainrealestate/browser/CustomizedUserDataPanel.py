@@ -8,6 +8,13 @@ from zope.annotation.interfaces import IAnnotations
 from zope.component import getMultiAdapter
 
 from customer.krainrealestate.browser.agentprofile_viewlet import IAgentProfile
+from customer.krainrealestate.browser.interfaces import IAgentFolder
+
+try:
+    from plone.mls.listing.interfaces import ILocalAgencyInfo
+    ps_mls = True
+except:
+    ps_mls = False
 
 from pprint import pprint
 
@@ -44,6 +51,16 @@ class CustomizedUserDataPanel(UserDataPanel):
         pprint(folders)
         pprint(data)
         pprint(self.userid)
+
+        for folder in folders:
+            pprint(folder)
+            if IAgentFolder.providedBy(folder) and ILocalAgencyInfo.providedBy(folder):
+                pprint('valid folder to update')
+                mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", {})
+                pprint(mls_ano)
+
+            else:
+                print 'Invalid Folder'
 
     def _get_AgentProfileFolders(self):
         """get all the Agents Folders
