@@ -75,6 +75,9 @@ class CustomizedUserDataPanel(UserDataPanel):
                 mls_ano['agent_email'] = data.get('email', u'')
                 mls_ano['agent_avatar_url'] = avatar_url
 
+                #force overrding of Any other agent
+                mls_ano['force'] = 'selected'
+
     @property
     def __AgencyInfo(self):
         """Get global Agency Info from Config"""
