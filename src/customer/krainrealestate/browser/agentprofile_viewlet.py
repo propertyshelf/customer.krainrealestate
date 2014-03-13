@@ -21,6 +21,13 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from customer.krainrealestate.browser.interfaces import IKrainViewlets, IAgentFolder
 from customer.krainrealestate import _
 
+#plone.mls.listing imports
+try:
+    from plone.mls.listing.interfaces import ILocalAgencyInfo
+    ps_mls = True
+except:
+    ps_mls = False
+
 CONFIGURATION_KEY = 'customer.krainrealestate.agentprofile'
 
 class IPossibleAgentProfile(Interface):
@@ -328,6 +335,7 @@ class AgentProfileToggle(object):
         if IAgentProfile.providedBy(self.context):
             # Deactivate AgentProfile viewlet.
             noLongerProvides(self.context, IAgentProfile)
+
             self.context.reindexObject(idxs=['object_provides', ])
             # unset marker interface for parent folder
             pf = self.context.aq_parent
@@ -338,6 +346,11 @@ class AgentProfileToggle(object):
             
         elif IPossibleAgentProfile.providedBy(self.context):
             alsoProvides(self.context, IAgentProfile)
+
+            if ps_mls:
+                #deactivate Localagency info for AgentProfilePage
+                noLongerProvides(self.context, ILocalAgencyInfo)
+            
             self.context.reindexObject(idxs=['object_provides', ])
             # set marker interface for parent folder
             pf = self.context.aq_parent
