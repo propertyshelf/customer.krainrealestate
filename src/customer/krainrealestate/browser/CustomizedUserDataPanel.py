@@ -35,14 +35,15 @@ class CustomizedUserDataPanel(UserDataPanel):
             membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
             agent = membershiptool.getMemberById(self.userid)
         else:
+            #otherwise use logged in user 
             portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
             agent = portal_state.member()
             self.userid = agent.id
 
-        if agent.has_role('Agent'):
+        if ps_mls and agent.has_role('Agent'):
             #custom save action only for "Agent" group
             pprint('User Data saved, hook is hooking for: ' + self.userid)
-            agent_folders = self._get_AgentProfileFolders()
+            agent_folders = self._get_AgentProfileFolders
             if len(agent_folders):
                 self._update_AgentInfoPortlet_ProfilePage(agent_folders, data)
 
@@ -59,7 +60,7 @@ class CustomizedUserDataPanel(UserDataPanel):
             if IAgentFolder.providedBy(folder) and ILocalAgencyInfo.providedBy(folder):
                 pprint('update folder:')
                 pprint(folder)
-                
+
                 mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", {})
 
                 mls_ano['agency_name'] = 'Krain Real Estate'
@@ -70,7 +71,7 @@ class CustomizedUserDataPanel(UserDataPanel):
                 mls_ano['agent_avatar_url'] = avatar_url
 
            
-
+    @property
     def _get_AgentProfileFolders(self):
         """get all the Agents Folders
             @return: list of Agent folders for given agent, empty list for invalid
