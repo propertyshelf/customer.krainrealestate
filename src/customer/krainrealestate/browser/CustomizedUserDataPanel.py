@@ -7,15 +7,17 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getMultiAdapter, getUtility
+from zope.interface import alsoProvides
 
 #local imports
-from customer.krainrealestate.browser.agentprofile_viewlet import IAgentProfile
+from customer.krainrealestate.browser.agentprofile_viewlet import IAgentProfile, IPossibleAgentProfile
 from customer.krainrealestate.browser.interfaces import IAgentFolder
 
 # try to import plone.mls.listing interfaces for ps specific functions
 try:
     from plone.mls.listing.interfaces import (
         ILocalAgencyInfo,
+        IPossibleLocalAgencyInfo,
         IMLSAgencyContactInformation,
     )
     ps_mls = True
@@ -128,14 +130,15 @@ class CustomizedUserDataPanel(UserDataPanel):
 
                 foo = catalog(path={ "query": my_path}, Language="all")
                 if len(foo)==0:
-                    #create folder            
+                    #create main agent folders            
                     try:
                         new_folder = navRoot.invokeFactory('Folder', agent_folders_id, title=agent_folders_title, path=my_path)
                         agent_root = getattr(navRoot, new_folder,None)
                         workflowTool.doActionFor(agent_root, "publish",comment="published by setup (customer.krainrealestate)")
+                        self.context.plone_utils.addPortalMessage('"'+new_folder+'" added.' , 'info')
                         
-                    except:
-                        pass
+                    except Exception:
+                        print Exception
 
                 agentRoot= portal.unrestrictedTraverse(lang + "/" + agent_folders_id)
                 
@@ -144,11 +147,17 @@ class CustomizedUserDataPanel(UserDataPanel):
                     newAgentFolder = agentRoot.invokeFactory('Folder', self.userid, title=member_fullname, path=my_path + "/" + self.userid)
                     agent_home = getattr(agentRoot, newAgentFolder,None)
                     workflowTool.doActionFor(agent_home, "publish",comment="published by setup (customer.krainrealestate)")
+                    self.context.plone_utils.addPortalMessage('"'+newAgentFolder+'" added & published.' , 'info')
                     created = True
+                    # activate local agency Info
+                    if IPossibleLocalAgencyInfo.providedBy(agent_home):
+                        alsoProvides(agent_home, ILocalAgencyInfo)
+                        agent_home.reindexObject(idxs=['object_provides', ])
+
                     #Todo: 
                     #   + permission to 'See' in folder, publish
-                    #   + activate plone.mls.listing local agency info
-                except:
+
+                except Exception:
                     """Folders exist already"""
                     created = False
                     print 'Personal Agent folder already exist'
@@ -163,9 +172,11 @@ class CustomizedUserDataPanel(UserDataPanel):
                         newAgentBlogFolder = myAgentRoot.invokeFactory('Folder', blog_id, title=blog_title, path=my_path + "/" + self.userid +"/"+blog_id)
                         agent_blog = getattr(myAgentRoot, newAgentBlogFolder,None)
                         workflowTool.doActionFor(agent_blog, "publish",comment="published by setup (customer.krainrealestate)")
-                    except:
+                        self.context.plone_utils.addPortalMessage('"'+newAgentBlogFolder+'" added & published.' , 'info')
+                    except Exception, e:
                         """Folders exist already"""
                         print 'Blog folder exists already'
+                        print e
                     #Todo: 
                     #   + permission to 'Add' in folder, publish
                     #   + content type restriction to 'news', 'image'
@@ -178,31 +189,50 @@ class CustomizedUserDataPanel(UserDataPanel):
                         newAgentFeaturedFolder = myAgentRoot.invokeFactory('Folder', featured_id, title=featured_title, path=my_path + "/" + self.userid +"/"+featured_id)
                         agent_featured = getattr(myAgentRoot, newAgentFeaturedFolder,None)
                         workflowTool.doActionFor(agent_featured, "publish",comment="published by setup (customer.krainrealestate)")
-                    except:
+                        self.context.plone_utils.addPortalMessage('"'+newAgentFeaturedFolder+'" added & published.' , 'info')
+                    except Exception, e:
                         """Folders exist already"""
                         print 'Featured folder exist already'
+                        print e
                     #Todo: 
                     #   + Featured Listing Collection
                     #   + permission to 'Add' in folder, publish
                     #   + content type restriction to 'listing'
+                  
 
                     #create Profile page
                     profile_id = agent_profile[lang]['id']
                     profile_title = agent_profile[lang]['title']
 
                     try:
-                        profilePage = myAgentRoot.invokeFactory('Page', profile_id, title=profile_title, path=my_path + "/" + self.userid +"/"+profile_id)
+                        profilePage = myAgentRoot.invokeFactory('Document', profile_id, title=profile_title, path=my_path + "/" + self.userid +"/"+profile_id)
                         ppage = getattr(myAgentRoot, profilePage,None)
                         workflowTool.doActionFor(ppage, "publish",comment="published by setup (customer.krainrealestate)")
-                    except:
+                        self.context.plone_utils.addPortalMessage('"'+profilePage+'" added,published.' , 'info')
+                        #activate AgentProfile Viewlet
+                        self._activateAgentProfile(ppage, profilePage)
+                        
+                    except Exception, e:
                         """Profile page already exists"""
-                        print 'Standard Profile Page already exists'
+                        print 'Profile Page: exist already'
+                        print e
+                        
                     #Todo:
                     #   + set default view
                     #   + permission 'edit'
-                    #   + activate 'Profile'
-                    #   + set agent ID
-                
+
+
+    def _activateAgentProfile(self,ppage, title='AgentProfilePage'):
+        """ activate Agent Profile"""
+        CONFIGURATION_KEY = "customer.krainrealestate.agentprofile"
+        if IPossibleAgentProfile.providedBy(ppage):
+            alsoProvides(ppage, IAgentProfile)
+            ppage.reindexObject(idxs=['object_provides', ])
+            self.context.plone_utils.addPortalMessage('"'+title+'" activated for Agent.', 'info')
+
+            anno = IAnnotations(ppage)
+            anno.get(CONFIGURATION_KEY, anno.setdefault(CONFIGURATION_KEY, {'agent_id':self.userid}))
+          
 
     @property
     def __AgencyInfo(self):
