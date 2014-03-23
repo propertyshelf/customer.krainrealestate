@@ -5,6 +5,7 @@ from Acquisition import aq_inner
 from plone.app.users.browser.personalpreferences import UserDataPanel
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.ATContentTypes.lib import constraintypes # Set allowed content types
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getMultiAdapter, getUtility
 from zope.interface import alsoProvides
@@ -30,7 +31,7 @@ class CustomizedUserDataPanel(UserDataPanel):
     def __init__(self, context, request):
         super(CustomizedUserDataPanel, self).__init__(context, request)
         self.form_fields = self.form_fields.omit('location', 'description','agent_profile_en', 'agent_profile_es', 'agent_profile_de')
-    
+
     def _on_save(self, data):
         """ implementing plone.app.users.browser.interfaces._on_save function
             for custom event handling
@@ -103,8 +104,7 @@ class CustomizedUserDataPanel(UserDataPanel):
         portal = aq_inner(self.context)
         catalog = getToolByName(portal, 'portal_catalog')
         workflowTool = getToolByName(portal, "portal_workflow")
-        membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
-
+        membershiptool = getToolByName(portal, 'portal_membership')
 
         languages = ['en', 'es', 'de']
         agent_profile = {   'en': {'id':'personal-description', 'title':'Personal Description' }, 
@@ -234,9 +234,21 @@ class CustomizedUserDataPanel(UserDataPanel):
                     except Exception, e:
                         print 'Could not set default page'
                         print e
+                    #set addable content types to our structure
+                    try:
+                        blog_ct_list = ['News Item','Image']
+                        self._setAllowedCT(agent_blog, blog_ct_list)
+                    except Exception, e:
+                        print 'Blog: Could not set Content Type restriction'
+                        print e
+                    try:
+                        feat_ct_list = ['plone.mls.listing.listing','Image']
+                        self._setAllowedCT(agent_featured, feat_ct_list)
+                    except Exception, e:
+                        print 'Featured: Could not set Content Type restriction'
+                        print e
                         
                     #Todo:
-                    #   + set default view
                     #   + permission 'edit'
 
 
@@ -269,7 +281,13 @@ class CustomizedUserDataPanel(UserDataPanel):
         member = membership.getMemberById(self.userid)
         member.setMemberProperties(mapping={field:link})
     
-        self.context.plone_utils.addPortalMessage('Profile Link updated ('+ language +')', 'info')
+        return True
+
+    def _setAllowedCT(self, folder, allowedCT):
+        """set allowed addable content types for a given content object"""
+        # Enable contstraining
+        folder.setConstrainTypesMode(constraintypes.ENABLED)
+        folder.setLocallyAllowedTypes(allowedCT)
         return True
           
 
