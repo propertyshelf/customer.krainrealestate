@@ -115,7 +115,7 @@ class CustomizedUserDataPanel(UserDataPanel):
 
         if len(self.userid):
             member = membershiptool.getMemberById(self.userid)
-            member_fullname = member.getProperty("fullname")
+            member_fullname = member.getProperty("fullname", self.userid)
 
             for lang in languages:
                 # get the different navigation roots             
@@ -131,8 +131,8 @@ class CustomizedUserDataPanel(UserDataPanel):
                     #create folder            
                     try:
                         new_folder = navRoot.invokeFactory('Folder', agent_folders_id, title=agent_folders_title, path=my_path)
-                        bar = getattr(navRoot, new_folder,None)
-                        workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                        agent_root = getattr(navRoot, new_folder,None)
+                        workflowTool.doActionFor(agent_root, "publish",comment="published by setup (customer.krainrealestate)")
                         
                     except:
                         pass
@@ -142,38 +142,66 @@ class CustomizedUserDataPanel(UserDataPanel):
                 try:
                     #test if agent folder already exists
                     newAgentFolder = agentRoot.invokeFactory('Folder', self.userid, title=member_fullname, path=my_path + "/" + self.userid)
-                    bar = getattr(agentRoot, newAgentFolder,None)
-                    workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                    agent_home = getattr(agentRoot, newAgentFolder,None)
+                    workflowTool.doActionFor(agent_home, "publish",comment="published by setup (customer.krainrealestate)")
                     created = True
+                    #Todo: 
+                    #   + permission to 'See' in folder, publish
+                    #   + activate plone.mls.listing local agency info
                 except:
                     """Folders exist already"""
                     created = False
                     print 'Personal Agent folder already exist'
 
                 if(created):
-                    """"setup the missing folders"""
+                    """"setup the missing folders and contents"""
                     myAgentRoot = portal.unrestrictedTraverse(lang + "/" + agent_folders_id + "/" + self.userid) 
                     #set 'Blog' folder
                     blog_id= agent_blog_folders[lang]['id']
                     blog_title= agent_blog_folders[lang]['title']
                     try:
                         newAgentBlogFolder = myAgentRoot.invokeFactory('Folder', blog_id, title=blog_title, path=my_path + "/" + self.userid +"/"+blog_id)
-                        bar = getattr(myAgentRoot, newAgentBlogFolder,None)
-                        workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                        agent_blog = getattr(myAgentRoot, newAgentBlogFolder,None)
+                        workflowTool.doActionFor(agent_blog, "publish",comment="published by setup (customer.krainrealestate)")
                     except:
                         """Folders exist already"""
                         print 'Blog folder exists already'
+                    #Todo: 
+                    #   + permission to 'Add' in folder, publish
+                    #   + content type restriction to 'news', 'image'
+
 
                     #set 'Featured Listings' folder
                     featured_id= agent_featured_folders[lang]['id']
                     featured_title= agent_featured_folders[lang]['title']
                     try:
                         newAgentFeaturedFolder = myAgentRoot.invokeFactory('Folder', featured_id, title=featured_title, path=my_path + "/" + self.userid +"/"+featured_id)
-                        bar = getattr(myAgentRoot, newAgentFeaturedFolder,None)
-                        workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                        agent_featured = getattr(myAgentRoot, newAgentFeaturedFolder,None)
+                        workflowTool.doActionFor(agent_featured, "publish",comment="published by setup (customer.krainrealestate)")
                     except:
                         """Folders exist already"""
                         print 'Featured folder exist already'
+                    #Todo: 
+                    #   + Featured Listing Collection
+                    #   + permission to 'Add' in folder, publish
+                    #   + content type restriction to 'listing'
+
+                    #create Profile page
+                    profile_id = agent_profile[lang]['id']
+                    profile_title = agent_profile[lang]['title']
+
+                    try:
+                        profilePage = myAgentRoot.invokeFactory('Page', profile_id, title=profile_title, path=my_path + "/" + self.userid +"/"+profile_id)
+                        ppage = getattr(myAgentRoot, profilePage,None)
+                        workflowTool.doActionFor(ppage, "publish",comment="published by setup (customer.krainrealestate)")
+                    except:
+                        """Profile page already exists"""
+                        print 'Standard Profile Page already exists'
+                    #Todo:
+                    #   + set default view
+                    #   + permission 'edit'
+                    #   + activate 'Profile'
+                    #   + set agent ID
                 
 
     @property
