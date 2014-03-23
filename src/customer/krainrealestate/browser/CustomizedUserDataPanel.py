@@ -88,32 +88,93 @@ class CustomizedUserDataPanel(UserDataPanel):
         portal = aq_inner(self.context)
         catalog = getToolByName(portal, 'portal_catalog')
         workflowTool = getToolByName(portal, "portal_workflow")
+        membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
 
 
         languages = ['en', 'es', 'de']
-        agent_folders = {'en':'agents', 'es': 'inmobiliarios', 'de':'makler'}
-        agent_profile = {'en': 'Personal Description', 'es': 'Perfil del Agente', 'de':'Makler Profil'}
-        agent_featured = {'en':'Featured Listings', 'es': 'Propiedades Destacadas', 'de':'Meine Immobilien'}
+        agent_profile = {   'en': {'id':'personal-description', 'title':'Personal Description' }, 
+                            'es': {'id':'perfil-inmobiliario', 'title':'Perfil del Inmobiliario' }, 
+                            'de': {'id':'makler-profil', 'title':'Makler Profil' }
+        }
+        agent_featured_folders = {
+                            'en': {'id':'featured-listings', 'title':'Featured Listings' },
+                            'es': {'id':'propiedades-destacadas', 'title':'Propiedades Destacadas' }, 
+                            'de': {'id':'besondere-immobilien', 'title':'Besondere Immobilien' }
+        }
 
-        if len(self.userid):         
+        agent_folders = {
+                            'en': {'id':'agents', 'title':'Agents' },
+                            'es': {'id':'inmobiliarios', 'title':'Inmobiliarios' }, 
+                            'de': {'id':'makler', 'title':'Makler' }
+        }
+        agent_blog_folders = {
+                            'en': {'id':'blog', 'title':'Blog' },
+                            'es': {'id':'blog', 'title':'Blog' }, 
+                            'de': {'id':'blog', 'title':'Blog' }
+        }
+
+        if len(self.userid):
+            member = membershiptool.getMemberById(self.userid)
+            member_fullname = member.getProperty("fullname")
+
             for lang in languages:
                 # get the different navigation roots             
                 navRoot = portal.unrestrictedTraverse(lang)
                 #check if basic setup is done already
-                
+                agent_folders_id = agent_folders[lang]['id']
+                agent_folders_title = agent_folders[lang]['title']
                 my_path = '/'.join(context.getPhysicalPath())
-                my_path = my_path + '/' + lang + '/' + agent_folders[lang]
+                my_path = my_path + '/' + lang + '/' + agent_folders_id
 
                 foo = catalog(path={ "query": my_path}, Language="all")
                 if len(foo)==0:
                     #create folder            
                     try:
-                        new_folder = navRoot.invokeFactory('Folder', agent_folders[lang], title=agent_folders[lang], path=my_path)
+                        new_folder = navRoot.invokeFactory('Folder', agent_folders_id, title=agent_folders_title, path=my_path)
                         bar = getattr(navRoot, new_folder,None)
                         workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
-
+                        
                     except:
                         pass
+
+                agentRoot= portal.unrestrictedTraverse(lang + "/" + agent_folders_id)
+                
+                try:
+                    #test if agent folder already exists
+                    newAgentFolder = agentRoot.invokeFactory('Folder', self.userid, title=member_fullname, path=my_path + "/" + self.userid)
+                    bar = getattr(agentRoot, newAgentFolder,None)
+                    workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                    created = True
+                except:
+                    """Folders exist already"""
+                    created = False
+                    print 'Personal Agent folder already exist'
+
+                if(created):
+                    """"setup the missing folders"""
+                    myAgentRoot = portal.unrestrictedTraverse(lang + "/" + agent_folders_id + "/" + self.userid) 
+                    #set 'Blog' folder
+                    blog_id= agent_blog_folders[lang]['id']
+                    blog_title= agent_blog_folders[lang]['title']
+                    try:
+                        newAgentBlogFolder = myAgentRoot.invokeFactory('Folder', blog_id, title=blog_title, path=my_path + "/" + self.userid +"/"+blog_id)
+                        bar = getattr(myAgentRoot, newAgentBlogFolder,None)
+                        workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                    except:
+                        """Folders exist already"""
+                        print 'Blog folder exists already'
+
+                    #set 'Featured Listings' folder
+                    featured_id= agent_featured_folders[lang]['id']
+                    featured_title= agent_featured_folders[lang]['title']
+                    try:
+                        newAgentFeaturedFolder = myAgentRoot.invokeFactory('Folder', featured_id, title=featured_title, path=my_path + "/" + self.userid +"/"+featured_id)
+                        bar = getattr(myAgentRoot, newAgentFeaturedFolder,None)
+                        workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+                    except:
+                        """Folders exist already"""
+                        print 'Featured folder exist already'
+                
 
     @property
     def __AgencyInfo(self):
