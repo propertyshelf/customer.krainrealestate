@@ -168,9 +168,6 @@ class CustomizedUserDataPanel(UserDataPanel):
                         alsoProvides(agent_home, IAgentFolder)
                         agent_home.reindexObject(idxs=['object_provides', ])
 
-                    #Todo: 
-                    #   + permission to 'See' in folder, publish
-
                 except Exception:
                     """Folders exist already"""
                     created = False
@@ -190,10 +187,6 @@ class CustomizedUserDataPanel(UserDataPanel):
                         """Folders exist already"""
                         print 'Blog folder exists already'
                         print e
-                    #Todo: 
-                    #   + permission to 'Add' in folder, publish
-                    #   + content type restriction to 'news', 'image'
-
 
                     #set 'Featured Listings' folder
                     featured_id= agent_featured_folders[lang]['id']
@@ -208,9 +201,6 @@ class CustomizedUserDataPanel(UserDataPanel):
                         print e
                     #Todo: 
                     #   + Featured Listing Collection
-                    #   + permission to 'Add' in folder, publish
-                    #   + content type restriction to 'listing'
-                  
 
                     #create Profile page
                     profile_id = agent_profile[lang]['id']
@@ -247,9 +237,38 @@ class CustomizedUserDataPanel(UserDataPanel):
                     except Exception, e:
                         print 'Featured: Could not set Content Type restriction'
                         print e
-                        
-                    #Todo:
-                    #   + permission 'edit'
+
+                    try:
+                        #set 'view' permission for the home folder 
+                        home_role_list = ['Reader']
+                        self._setRole(agent_home, home_role_list)
+                    except Exception, e:
+                        print 'Agent Home Folder: Could not set Role'
+                        print e
+
+                    try:
+                        #set role for Blog
+                        blog_role_list = ['Contributor']
+                        self._setRole(agent_blog, blog_role_list)
+                    except Exception, e:
+                        print 'Blog: Could not set Role'
+                        print e
+
+                    try:
+                        #set role for Featured Listings
+                        feat_role_list = ['Contributor']
+                        self._setRole(agent_featured, feat_role_list)
+                    except Exception, e:
+                        print 'Featured: Could not set Role'
+                        print e
+
+                    try:
+                        #set role for ProfilePage
+                        pp_role_list = ['Editor']
+                        self._setRole(ppage, pp_role_list)
+                    except Exception, e:
+                        print 'ProfilePage: Could not set Role'
+                        print e
 
 
     def _activateAgentProfile(self,ppage, title='AgentProfilePage'):
@@ -289,7 +308,10 @@ class CustomizedUserDataPanel(UserDataPanel):
         folder.setConstrainTypesMode(constraintypes.ENABLED)
         folder.setLocallyAllowedTypes(allowedCT)
         return True
-          
+
+    def _setRole(self, folder, role=['Reader']):
+        """set a given role for our user on a folder"""
+        folder.manage_setLocalRoles(self.userid, role) 
 
     @property
     def __AgencyInfo(self):
