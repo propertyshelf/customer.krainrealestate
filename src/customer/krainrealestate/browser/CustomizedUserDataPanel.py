@@ -231,7 +231,6 @@ class CustomizedUserDataPanel(UserDataPanel):
                     #set default page
                     try:
                         agent_home.manage_addProperty('default_page',profilePage,'string')
-                        print 'Default Page set'
                     except Exception, e:
                         print 'Could not set default page'
                         print e
