@@ -49,11 +49,15 @@ class CustomizedUserDataPanel(UserDataPanel):
         if ps_mls and agent.has_role('Agent'):
             #custom save action only for "Agent" group
             agent_folders = self._get_AgentProfileFolders
+
             if len(agent_folders):
                 self._update_AgentInfoPortlet_ProfilePage(agent_folders, data)
             else:
                 #we don't have any AgentProfiles, so its time for basic setup
                 self._basicAgentPagesSetup
+                #update the local mls settings
+                self._update_AgentInfoPortlet_ProfilePage(self._get_AgentProfileFolders, data)
+                
 
     def _update_AgentInfoPortlet_ProfilePage(self, folders, data):
         """Override Annotation for plone.mls.listing AgentInfo inside AgentProfilePages"""
@@ -62,11 +66,19 @@ class CustomizedUserDataPanel(UserDataPanel):
         avatar_url = membershiptool.getPersonalPortrait(id=self.userid).absolute_url()
         #get AgencyInfo
         agency = self.__AgencyInfo
-       
+
         for folder in folders:
+
             if IAgentFolder.providedBy(folder) and ILocalAgencyInfo.providedBy(folder):
                 #get annotations for this folder
-                mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", {})
+                mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", None)
+
+                if mls_ano is None:
+                    #initialize Annotations
+                    anno = IAnnotations(folder)
+                    anno.get("plone.mls.listing.localagencyinfo", anno.setdefault("plone.mls.listing.localagencyinfo", {}))
+                    mls_ano = IAnnotations(folder).get("plone.mls.listing.localagencyinfo", {})
+
                 # set global Agency Info
                 mls_ano['agency_name'] = agency.get('agency_name', u'Krain Real Estate')
                 mls_ano['agency_logo_url'] = agency.get('agency_logo_url', u'')
@@ -82,6 +94,7 @@ class CustomizedUserDataPanel(UserDataPanel):
 
                 #force overrding of Any other agent
                 mls_ano['force'] = 'selected'
+
 
     @property
     def _basicAgentPagesSetup(self):
@@ -152,6 +165,7 @@ class CustomizedUserDataPanel(UserDataPanel):
                     # activate local agency Info
                     if IPossibleLocalAgencyInfo.providedBy(agent_home):
                         alsoProvides(agent_home, ILocalAgencyInfo)
+                        alsoProvides(agent_home, IAgentFolder)
                         agent_home.reindexObject(idxs=['object_provides', ])
 
                     #Todo: 
@@ -172,7 +186,6 @@ class CustomizedUserDataPanel(UserDataPanel):
                         newAgentBlogFolder = myAgentRoot.invokeFactory('Folder', blog_id, title=blog_title, path=my_path + "/" + self.userid +"/"+blog_id)
                         agent_blog = getattr(myAgentRoot, newAgentBlogFolder,None)
                         workflowTool.doActionFor(agent_blog, "publish",comment="published by setup (customer.krainrealestate)")
-                        self.context.plone_utils.addPortalMessage('"'+newAgentBlogFolder+'" added & published.' , 'info')
                     except Exception, e:
                         """Folders exist already"""
                         print 'Blog folder exists already'
@@ -189,7 +202,6 @@ class CustomizedUserDataPanel(UserDataPanel):
                         newAgentFeaturedFolder = myAgentRoot.invokeFactory('Folder', featured_id, title=featured_title, path=my_path + "/" + self.userid +"/"+featured_id)
                         agent_featured = getattr(myAgentRoot, newAgentFeaturedFolder,None)
                         workflowTool.doActionFor(agent_featured, "publish",comment="published by setup (customer.krainrealestate)")
-                        self.context.plone_utils.addPortalMessage('"'+newAgentFeaturedFolder+'" added & published.' , 'info')
                     except Exception, e:
                         """Folders exist already"""
                         print 'Featured folder exist already'
@@ -207,14 +219,21 @@ class CustomizedUserDataPanel(UserDataPanel):
                     try:
                         profilePage = myAgentRoot.invokeFactory('Document', profile_id, title=profile_title, path=my_path + "/" + self.userid +"/"+profile_id)
                         ppage = getattr(myAgentRoot, profilePage,None)
-                        workflowTool.doActionFor(ppage, "publish",comment="published by setup (customer.krainrealestate)")
-                        self.context.plone_utils.addPortalMessage('"'+profilePage+'" added,published.' , 'info')
+                        #workflowTool.doActionFor(ppage, "publish",comment="published by setup (customer.krainrealestate)")
                         #activate AgentProfile Viewlet
                         self._activateAgentProfile(ppage, profilePage)
+                        self._setProfilePageLink(ppage.absolute_url(), lang)
                         
                     except Exception, e:
                         """Profile page already exists"""
                         print 'Profile Page: exist already'
+                        print e
+                    #set default page
+                    try:
+                        agent_home.manage_addProperty('default_page',profilePage,'string')
+                        print 'Default Page set'
+                    except Exception, e:
+                        print 'Could not set default page'
                         print e
                         
                     #Todo:
@@ -232,6 +251,27 @@ class CustomizedUserDataPanel(UserDataPanel):
 
             anno = IAnnotations(ppage)
             anno.get(CONFIGURATION_KEY, anno.setdefault(CONFIGURATION_KEY, {'agent_id':self.userid}))
+
+    def _setProfilePageLink(self, link, language):
+        """updates the agents userdata with the proper profile page link"""
+        # "field" is the language depending form field in the memberdata
+        if language =='en':
+            field = "agent_profile_en"
+        elif language =='es':
+            field = "agent_profile_es"
+        elif language =='de':
+            field = "agent_profile_de"
+        else:
+            msg = u"Currently we don't support this content language ("+ language +") yet."
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+            return False
+
+        membership = getToolByName(self.context, 'portal_membership')
+        member = membership.getMemberById(self.userid)
+        member.setMemberProperties(mapping={field:link})
+    
+        self.context.plone_utils.addPortalMessage('Profile Link updated ('+ language +')', 'info')
+        return True
           
 
     @property
