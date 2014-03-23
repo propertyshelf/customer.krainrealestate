@@ -49,6 +49,9 @@ class CustomizedUserDataPanel(UserDataPanel):
             agent_folders = self._get_AgentProfileFolders
             if len(agent_folders):
                 self._update_AgentInfoPortlet_ProfilePage(agent_folders, data)
+            else:
+                #we don't have any AgentProfiles, so its time for basic setup
+                self._basicAgentPagesSetup
 
     def _update_AgentInfoPortlet_ProfilePage(self, folders, data):
         """Override Annotation for plone.mls.listing AgentInfo inside AgentProfilePages"""
@@ -77,6 +80,40 @@ class CustomizedUserDataPanel(UserDataPanel):
 
                 #force overrding of Any other agent
                 mls_ano['force'] = 'selected'
+
+    @property
+    def _basicAgentPagesSetup(self):
+        """setup basic agent folder structure """
+        context = self.context
+        portal = aq_inner(self.context)
+        catalog = getToolByName(portal, 'portal_catalog')
+        workflowTool = getToolByName(portal, "portal_workflow")
+
+
+        languages = ['en', 'es', 'de']
+        agent_folders = {'en':'agents', 'es': 'inmobiliarios', 'de':'makler'}
+        agent_profile = {'en': 'Personal Description', 'es': 'Perfil del Agente', 'de':'Makler Profil'}
+        agent_featured = {'en':'Featured Listings', 'es': 'Propiedades Destacadas', 'de':'Meine Immobilien'}
+
+        if len(self.userid):         
+            for lang in languages:
+                # get the different navigation roots             
+                navRoot = portal.unrestrictedTraverse(lang)
+                #check if basic setup is done already
+                
+                my_path = '/'.join(context.getPhysicalPath())
+                my_path = my_path + '/' + lang + '/' + agent_folders[lang]
+
+                foo = catalog(path={ "query": my_path}, Language="all")
+                if len(foo)==0:
+                    #create folder            
+                    try:
+                        new_folder = navRoot.invokeFactory('Folder', agent_folders[lang], title=agent_folders[lang], path=my_path)
+                        bar = getattr(navRoot, new_folder,None)
+                        workflowTool.doActionFor(bar, "publish",comment="published by setup (customer.krainrealestate)")
+
+                    except:
+                        pass
 
     @property
     def __AgencyInfo(self):
