@@ -188,6 +188,21 @@ class CustomizedUserDataPanel(UserDataPanel):
                         print 'Blog folder exists already'
                         print e
 
+                    try:
+                        #create 'Blog' collection
+                        blog_collection = agent_blog.invokeFactory('Collection', blog_id, title=blog_title)
+                        agent_blog_collection = getattr(agent_blog, blog_collection,None)
+                        workflowTool.doActionFor(agent_blog_collection, "publish",comment="published by setup (customer.krainrealestate)")
+                        agent_blog.manage_addProperty('default_page',blog_collection,'string')
+                        #set criteria
+                        blog_criteria = []
+                        blog_criteria.append({'i':'portal_type', 'o':'plone.app.querystring.operation.selection.is','v':'News Item'})
+                        blog_criteria.append({'i':'Creator','o':'plone.app.querystring.operation.string.is','v':self.userid})
+                        self._setCriteria(agent_blog_collection, blog_criteria)
+                    except Exception, e:
+                        print 'Featured Listing Collection: could not create.'
+                        print e
+
                     #set 'Featured Listings' folder
                     featured_id= agent_featured_folders[lang]['id']
                     featured_title= agent_featured_folders[lang]['title']
@@ -199,8 +214,21 @@ class CustomizedUserDataPanel(UserDataPanel):
                         """Folders exist already"""
                         print 'Featured folder exist already'
                         print e
-                    #Todo: 
-                    #   + Featured Listing Collection
+                    
+                    try:
+                        #create 'Featured listing' collection
+                        featured_collection = agent_featured.invokeFactory('Collection', featured_id, title=featured_title)
+                        agent_featured_collection = getattr(agent_featured, featured_collection,None)
+                        workflowTool.doActionFor(agent_featured_collection, "publish",comment="published by setup (customer.krainrealestate)")
+                        agent_featured.manage_addProperty('default_page',featured_collection,'string')
+                        #set criteria
+                        criteria = []
+                        criteria.append({'i':'portal_type', 'o':'plone.app.querystring.operation.selection.is','v':'plone.mls.listing.listing'})
+                        criteria.append({'i':'path','o':'plone.app.querystring.operation.string.relativePath','v':'../'})
+                        self._setCriteria(agent_featured_collection, criteria)
+                    except Exception, e:
+                        print 'Featured Listing Collection: could not create.'
+                        print e
 
                     #create Profile page
                     profile_id = agent_profile[lang]['id']
@@ -269,7 +297,7 @@ class CustomizedUserDataPanel(UserDataPanel):
                     except Exception, e:
                         print 'ProfilePage: Could not set Role'
                         print e
-
+                        
 
     def _activateAgentProfile(self,ppage, title='AgentProfilePage'):
         """ activate Agent Profile"""
@@ -280,7 +308,7 @@ class CustomizedUserDataPanel(UserDataPanel):
             self.context.plone_utils.addPortalMessage('"'+title+'" activated for Agent.', 'info')
 
             anno = IAnnotations(ppage)
-            anno.get(CONFIGURATION_KEY, anno.setdefault(CONFIGURATION_KEY, {'agent_id':self.userid}))
+            return anno.get(CONFIGURATION_KEY, anno.setdefault(CONFIGURATION_KEY, {'agent_id':self.userid}))
 
     def _setProfilePageLink(self, link, language):
         """updates the agents userdata with the proper profile page link"""
@@ -306,12 +334,15 @@ class CustomizedUserDataPanel(UserDataPanel):
         """set allowed addable content types for a given content object"""
         # Enable contstraining
         folder.setConstrainTypesMode(constraintypes.ENABLED)
-        folder.setLocallyAllowedTypes(allowedCT)
-        return True
+        return folder.setLocallyAllowedTypes(allowedCT)
 
     def _setRole(self, folder, role=['Reader']):
         """set a given role for our user on a folder"""
-        folder.manage_setLocalRoles(self.userid, role) 
+        return folder.manage_setLocalRoles(self.userid, role) 
+
+    def _setCriteria(self, collection, criteria):
+        """set a criteria for a given collection"""
+        return collection.setQuery(criteria)
 
     @property
     def __AgencyInfo(self):
