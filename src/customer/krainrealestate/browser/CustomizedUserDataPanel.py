@@ -25,12 +25,19 @@ try:
 except:
     ps_mls = False
 
+try:
+    from collective.contentleadimage.config import IMAGE_FIELD_NAME
+    cli = True
+except:
+    cli = False
+
 
 class CustomizedUserDataPanel(UserDataPanel):
     """ Hide certain form fields in the UserDataPanel """
     def __init__(self, context, request):
         super(CustomizedUserDataPanel, self).__init__(context, request)
         self.form_fields = self.form_fields.omit('location', 'description','agent_profile_en', 'agent_profile_es', 'agent_profile_de')
+        self.membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
 
     def _on_save(self, data):
         """ implementing plone.app.users.browser.interfaces._on_save function
@@ -39,8 +46,7 @@ class CustomizedUserDataPanel(UserDataPanel):
         
         if len(self.userid):
             #if we have a userid, use this as agent
-            membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
-            agent = membershiptool.getMemberById(self.userid)
+            agent = self.membershiptool.getMemberById(self.userid)
         else:
             #otherwise use logged in user 
             portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
@@ -58,13 +64,53 @@ class CustomizedUserDataPanel(UserDataPanel):
                 self._basicAgentPagesSetup
                 #update the local mls settings
                 self._update_AgentInfoPortlet_ProfilePage(self._get_AgentProfileFolders, data)
+
+        if agent.has_role('Agent'):
+            """Updates also when plone.mls.listing not active"""
+
+            portrait=data.get('portrait', False)
+            del_portrait=data.get('pdelete', False)
+
+            if portrait:
+                #make an update for the content leadimage of the profile pages 
+                self._updateAgentPortrait(portrait)
+            elif del_portrait:
+                self._deleteAgentPortrait
                 
+
+    def _updateAgentPortrait(self, image):
+        """update contentleadimages of profile pages with new agent portrait"""
+        if cli == False:
+            #if we dont have content leadimage installed, return False
+            return False
+        print 'update portrait of ' +self.userid
+        try:
+            image_raw = image.read()
+        except Exception, e:
+            print e
+            return False
+
+        profile_pages = self._get_AgentProfilePages
+        
+        for pp in profile_pages:
+            pp_cli = pp.getField(IMAGE_FIELD_NAME)
+            
+            if pp_cli is not None:
+                pp_cli.set(pp, image_raw)
+                pp.reindexObject()
+                pp.reindexObject(idxs=['hasContentLeadImage'])
+
+        return True
+
+    @property
+    def _deleteAgentPortrait(self):
+        """Agent just deleted the portrait - delete content leadimages as well"""
+        print 'delete CLI of : ' + self.userid
 
     def _update_AgentInfoPortlet_ProfilePage(self, folders, data):
         """Override Annotation for plone.mls.listing AgentInfo inside AgentProfilePages"""
         #get agents portrait/ avatar url
-        membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
-        avatar_url = membershiptool.getPersonalPortrait(id=self.userid).absolute_url()
+        avatar_url = self.membershiptool.getPersonalPortrait(id=self.userid).absolute_url()
         #get AgencyInfo
         agency = self.__AgencyInfo
 
@@ -104,7 +150,6 @@ class CustomizedUserDataPanel(UserDataPanel):
         portal = aq_inner(self.context)
         catalog = getToolByName(portal, 'portal_catalog')
         workflowTool = getToolByName(portal, "portal_workflow")
-        membershiptool = getToolByName(portal, 'portal_membership')
 
         languages = ['en', 'es', 'de']
         agent_profile = {   'en': {'id':'personal-description', 'title':'Personal Description' }, 
@@ -129,7 +174,7 @@ class CustomizedUserDataPanel(UserDataPanel):
         }
 
         if len(self.userid):
-            member = membershiptool.getMemberById(self.userid)
+            member = self.membershiptool.getMemberById(self.userid)
             member_fullname = member.getProperty("fullname", self.userid)
 
             for lang in languages:
@@ -324,8 +369,8 @@ class CustomizedUserDataPanel(UserDataPanel):
             self.context.plone_utils.addPortalMessage(msg, 'error')
             return False
 
-        membership = getToolByName(self.context, 'portal_membership')
-        member = membership.getMemberById(self.userid)
+        
+        member = self.membershiptool.getMemberById(self.userid)
         member.setMemberProperties(mapping={field:link})
     
         return True
@@ -387,3 +432,26 @@ class CustomizedUserDataPanel(UserDataPanel):
                 my_parents.append(pp_obj.aq_parent)
         
         return my_parents
+
+    @property
+    def _get_AgentProfilePages(self):
+        """get all the Agents Pages
+            @return: list of Agent Pages for given agent, empty list for invalid
+        """
+        agent_id = self.userid
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        #look for all Agentprofile pages
+        allprofilepages = catalog(object_provides=IAgentProfile.__identifier__, Language="all")
+        #check if they belong to our agent
+        my_pages = []
+        
+        for ppage in allprofilepages:
+            pp_obj = ppage.getObject()
+            #look in the annotations of the profile page and get the agent_id value or empty string
+            pp_agent = IAnnotations(pp_obj).get("customer.krainrealestate.agentprofile", {}).get("agent_id", u'')
+            
+            if pp_agent == agent_id:
+                my_pages.append(pp_obj)
+                
+        return my_pages
