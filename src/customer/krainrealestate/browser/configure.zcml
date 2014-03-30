@@ -39,7 +39,7 @@
       for="*"
       layer=".interfaces.IKrainRealestate"
       name="agentprofile-status"
-      permission="cmf.ModifyPortalContent"
+      permission="zope2.View"
       />
 
   <browser:page
@@ -75,7 +75,7 @@
       for="*"
       layer=".interfaces.IKrainRealestate"
       name="agentsearch-status"
-      permission="cmf.ModifyPortalContent"
+      permission="zope2.View"
       />
 
   <browser:page
