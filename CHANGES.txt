@@ -4,7 +4,7 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- fix agent zope-auth error for Agents
 
 
 0.3 (2014-03-24)
