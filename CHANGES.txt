@@ -1,7 +1,13 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.5 (unreleased)
+----------------
+
+- versioning cleanup
+
+
+0.4 (2014-03-30)
 ----------------
 
 - fix agent zope-auth error for Agents
