@@ -36,7 +36,15 @@ class CustomizedUserDataPanel(UserDataPanel):
     """ Hide certain form fields in the UserDataPanel """
     def __init__(self, context, request):
         super(CustomizedUserDataPanel, self).__init__(context, request)
-        self.form_fields = self.form_fields.omit('location', 'description','agent_profile_en', 'agent_profile_es', 'agent_profile_de')
+        try:
+            foo = request.getURL().split('@@')
+            if foo[1]=='user-information':
+                self.form_fields = self.form_fields.omit('location', 'description')
+            else:
+                self.form_fields = self.form_fields.omit('location', 'description','agent_profile_en', 'agent_profile_es', 'agent_profile_de', 'agent_priority')
+        except Exception:
+              self.form_fields = self.form_fields.omit('location', 'description','agent_profile_en', 'agent_profile_es', 'agent_profile_de', 'agent_priority')
+
         self.membershiptool = getToolByName(aq_inner(self.context), 'portal_membership')
 
     def _on_save(self, data):
