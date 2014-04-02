@@ -21,6 +21,18 @@
       description="Installs the awesome customer.krainrealestate package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
+  <!-- GenericSetup Upgrade Steps. -->
+  <!-- =========================== -->
+  <genericsetup:upgradeStep
+      title="Upgrade customer.krainrealestate"
+      description="Make Agents sortable"
+      source="1000"
+      destination="1001"
+      handler=".migration.migrate_to_1001"
+      sortkey="1"
+      profile="customer.krainrealestate:default"
+      />
   <!-- -*- extra stuff goes here -*- -->
   <!-- enable our viewlets for the BaseObject, for us: Pages -->
   <class class="Products.Archetypes.BaseObject.BaseObject">
