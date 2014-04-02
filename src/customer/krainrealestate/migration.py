@@ -13,7 +13,7 @@ PROFILE_ID = 'profile-customer.krainrealestate:default'
 def migrate_to_1001(context):
     """Migrate from 1000 to 1001.
 
-    * Update installed add-ons.
+    * Update memberdata
     """
     site = getUtility(IPloneSiteRoot)
     setup = getToolByName(site, 'portal_setup')
