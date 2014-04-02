@@ -125,3 +125,9 @@ class IEnhancedUserDataSchema(IUserDataSchema):
                       default=u"German Agent Profile Page"),
         required=False,
         )
+    agent_priority = schema.TextLine(
+        title=_(u'label_agent_priority', default=u'Agent Priority'),
+        description=_(u'help_agent_priority',
+                      default=u"Agent Priority"),
+        required=False,
+        )

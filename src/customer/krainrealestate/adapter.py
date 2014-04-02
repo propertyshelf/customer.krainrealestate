@@ -111,3 +111,10 @@ class EnhancedUserDataPanelAdapter(UserDataPanelAdapter):
     def set_agent_profile_de(self, value):
         return self.context.setMemberProperties({'agent_profile_de': value})
     agent_profile_de = property(get_agent_profile_de, set_agent_profile_de)
+
+    def get_agent_priority(self):
+        """we give a default priority 0f 3"""
+        return self.context.getProperty('agent_priority', '3')
+    def set_agent_priority(self, value):
+        return self.context.setMemberProperties({'agent_priority': value})
+    agent_priority = property(get_agent_priority, set_agent_priority)
