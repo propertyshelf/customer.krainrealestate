@@ -8,12 +8,18 @@
   
   <section class="agentsearch-wrapper viewlet"
       tal:condition="view/available">
-    <div class="agent-wrapper" tal:define="agents view/getAllAgents|nothing">
-      <tal:agents tal:repeat="agent agents">
-        <div class="agent">
-
-        <tal:agent
-          tal:define="my_agent python:agents.get(agent);
+    <div class="agent-wrapper" tal:define="agents_rows view/getSortedAgents;
+                                            key_list python:agents_rows.keys();
+                                            sorted_keys python:sorted(key_list);">
+                                           
+      <tal:agents_rows tal:condition="agents_rows">
+        <tal:agentsrows tal:repeat="key sorted_keys" >
+        <div tal:define="my_row python:agents_rows.get(key)">
+          <tal:agentrow tal:repeat="agents my_row">
+            <div class="agent" tal:define="my_agent python:my_row.get(agents); agent agents;">
+              
+              <tal:agent
+                  tal:define="
                       portrait python: view.AgentPortrait(agent);
                       email python: my_agent.get('email');
                       fullname python: my_agent.get('fullname');
@@ -21,6 +27,7 @@
                       areas_available python:len(areas)>0;
                       ProfilePage python: view.ProfileUrl(agent);
                       ">
+
           <div class="agent-avatar" tal:content="structure portrait">(Agent Avatar)</div>
           <div class="agent-name" tal:condition="fullname">
               <h2 tal:content="fullname">(Agent Fullname)</h2>
@@ -45,9 +52,14 @@
               tal:attributes="href string:mailto:${email}">
               Select Agent</a>
           </div>
-        </tal:agent>
+                      
+              </tal:agent>
+          </div>
+          </tal:agentrow>
         </div>
-      </tal:agents>
+        </tal:agentsrows>
+      
+      </tal:agents_rows>
     </div>
   </section>
 </html>
