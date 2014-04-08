@@ -125,6 +125,30 @@ class AgentSearchViewlet(ViewletBase):
            
         return agent_dict
 
+    @property
+    def getSortedAgents(self):
+        """Get Agents sorted by Priority"""
+        agent_dict ={}
+        for member in self.membership.listMembers():
+            if member.has_role('Agent'):
+                agent_id = member.getUserName()
+                try:
+                    order = int(member.getProperty('agent_priority'))
+                except ValueError:
+                    """Set default sort priority to 999"""
+                    #empty string produces value error
+                    order = 999
+                    
+                if not agent_dict.has_key(order):
+                    """test if sort order index already exist: if not - create empty dict"""
+                    agent_dict[order] = {}
+
+                agent_dict[order][agent_id]={}    
+                agent_dict[order][agent_id]['email'] = member.getProperty('email')
+                agent_dict[order][agent_id]['areas'] = self.__wrapAreas(member.getProperty('areas'))
+                agent_dict[order][agent_id]['fullname'] = member.getProperty('fullname')
+        return agent_dict
+
     def __wrapAreas(self, areas):
         """wrap the areas for html display"""
         areas_list = areas.strip().split('\n')
