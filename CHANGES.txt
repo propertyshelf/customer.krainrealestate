@@ -4,7 +4,7 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- make Agents sortable by a parameter in the user settings (admin view)
 
 
 0.6 (2014-03-31)
