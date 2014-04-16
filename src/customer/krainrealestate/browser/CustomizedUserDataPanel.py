@@ -81,19 +81,21 @@ class CustomizedUserDataPanel(UserDataPanel):
 
             if portrait:
                 #make an update for the content leadimage of the profile pages 
-                self._updateAgentPortrait(portrait)
+                self._updateAgentPortrait
             elif del_portrait:
+                #delete Agent Portrait
                 self._deleteAgentPortrait
                 
-
-    def _updateAgentPortrait(self, image):
+    @property
+    def _updateAgentPortrait(self):
         """update contentleadimages of profile pages with new agent portrait"""
         if cli == False:
             #if we dont have content leadimage installed, return False
             return False
-        print 'update portrait of ' +self.userid
+   
         try:
-            image_raw = image.read()
+            # get the fresh saved portrait image
+            image = self.membershiptool.getPersonalPortrait(id=self.userid)
         except Exception, e:
             print e
             return False
@@ -104,16 +106,27 @@ class CustomizedUserDataPanel(UserDataPanel):
             pp_cli = pp.getField(IMAGE_FIELD_NAME)
             
             if pp_cli is not None:
-                pp_cli.set(pp, image_raw)
+                #set portrait as ContentLeadImage
+                pp_cli.set(pp, image)
                 pp.reindexObject()
                 pp.reindexObject(idxs=['hasContentLeadImage'])
+               
 
         return True
 
     @property
     def _deleteAgentPortrait(self):
         """Agent just deleted the portrait - delete content leadimages as well"""
-        print 'delete CLI of : ' + self.userid
+        profile_pages = self._get_AgentProfilePages
+        
+        for pp in profile_pages:
+            pp_cli = pp.getField(IMAGE_FIELD_NAME)
+            
+            if pp_cli is not None:
+                #set portrait as ContentLeadImage
+                pp_cli.set(pp, None)
+                pp.reindexObject()
+                pp.reindexObject(idxs=['hasContentLeadImage'])
 
     def _update_AgentInfoPortlet_ProfilePage(self, folders, data):
         """Override Annotation for plone.mls.listing AgentInfo inside AgentProfilePages"""
