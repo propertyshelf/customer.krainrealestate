@@ -4,7 +4,7 @@ Changelog
 0.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- save AgentPortrait as contentleadimage for AgentProfilePages
 
 
 0.7 (2014-04-09)
