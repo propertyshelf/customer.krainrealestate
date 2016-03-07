@@ -1,14 +1,23 @@
 # -*- coding: utf-8 -*-
-
 """Test Viewlets of customer.krainrealestate"""
 
+# zope imports
 from zope.interface import alsoProvides
 
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from customer.krainrealestate.browser.agentprofile_viewlet import (AgentProfileViewlet, \
-    IAgentProfile, IPossibleAgentProfile)
-from customer.krainrealestate.browser.agentsearch_viewlet import (AgentSearchViewlet, \
-    IAgentSearch, IPossibleAgentSearch)
+
+# local imports
+from customer.krainrealestate.browser.agentprofile_viewlet import (
+    AgentProfileViewlet,
+    IAgentProfile,
+    IPossibleAgentProfile,
+)
+from customer.krainrealestate.browser.agentsearch_viewlet import (
+    AgentSearchViewlet,
+    IAgentSearch,
+    IPossibleAgentSearch,
+)
+
 
 class TestKrainViewlet(ViewletsTestCase):
     """Test the custom viewlets"""
@@ -23,7 +32,6 @@ class TestKrainViewlet(ViewletsTestCase):
         alsoProvides(self.folder.test, IAgentSearch)
         alsoProvides(self.folder.test, IPossibleAgentSearch)
         self.folder.test.reindexObject(idxs=['object_provides', ])
-        
 
     def _invalidateRequestMemoizations(self):
         try:
@@ -36,7 +44,7 @@ class TestKrainViewlet(ViewletsTestCase):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
-        
+
         viewlet = AgentProfileViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.site_url, "http://nohost/plone")
@@ -50,7 +58,7 @@ class TestKrainViewlet(ViewletsTestCase):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
-        
+
         viewlet = AgentSearchViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.site_url, "http://nohost/plone")
