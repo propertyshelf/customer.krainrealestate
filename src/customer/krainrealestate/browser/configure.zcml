@@ -85,5 +85,52 @@
       name="agentsearch-toggle"
       permission="cmf.ModifyPortalContent"
       />
-    
+
+
+  <browser:viewlet
+      class="plone.mls.listing.browser.listing_collection.ListingCollectionViewlet"
+      for="plone.mls.listing.browser.listing_collection.IListingCollection"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+      name="krain.plone.mls.listing.listing_collection"
+      permission="zope2.View"
+      />
+
+  <browser:viewlet
+      class="plone.mls.listing.browser.listing_search.ListingSearchViewlet"
+      for="plone.mls.listing.browser.listing_search.IListingSearch"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+      name="krain.plone.mls.listing.listing_search"
+      permission="zope2.View"
+      />
+
+  <browser:viewlet
+      class="plone.mls.listing.browser.recent_listings.RecentListingsViewlet"
+      for="plone.mls.listing.browser.recent_listings.IRecentListings"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+      name="krain.plone.mls.listing.recent_listings"
+      permission="zope2.View"
+      />
+
+  <!-- Viewlet. -->
+  <browser:viewlet
+      class="ps.plone.mls.browser.listings.featured.FeaturedListingsViewlet"
+      for="ps.plone.mls.browser.listings.featured.IFeaturedListings"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+      name="krain.ps.plone.mls.listings.featured"
+      permission="zope2.View"
+      />
+
+  <browser:viewlet
+      class="ps.plone.mls.browser.developments.collection.DevelopmentCollectionViewlet"
+      for="ps.plone.mls.interfaces.IDevelopmentCollection"
+      layer=".interfaces.IKrainRealestate"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+      name="krain.ps.plone.mls.development_collection"
+      permission="zope2.View"
+      />
+
 </configure>
