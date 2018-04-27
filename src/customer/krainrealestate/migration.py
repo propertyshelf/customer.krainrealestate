@@ -17,4 +17,24 @@ def migrate_to_1001(context):
     """
     site = getUtility(IPloneSiteRoot)
     setup = getToolByName(site, 'portal_setup')
-    setup.runImportStepFromProfile(PROFILE_ID, 'memberdata-properties', run_dependencies=False, purge_old=False)
+    setup.runImportStepFromProfile(
+        PROFILE_ID,
+        'memberdata-properties',
+        run_dependencies=False,
+        purge_old=False,
+    )
+
+
+def migrate_to_1002(context):
+    """Migrate from 1001 to 1002.
+
+    * Update viewlets
+    """
+    site = getUtility(IPloneSiteRoot)
+    setup = getToolByName(site, 'portal_setup')
+    setup.runImportStepFromProfile(
+        PROFILE_ID,
+        'viewlets',
+        run_dependencies=False,
+        purge_old=False,
+    )

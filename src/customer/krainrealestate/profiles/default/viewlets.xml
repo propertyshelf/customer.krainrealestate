@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<object>
+  <order manager="plone.abovecontentbody" skinname="*">
+    <viewlet name="krain.plone.mls.listing.listing_collection" insert-before="*" />
+    <viewlet name="krain.plone.mls.listing.listing_search" insert-before="*" />
+    <viewlet name="krain.plone.mls.listing.recent_listings" insert-before="*" />
+    <viewlet name="krain.ps.plone.mls.listings.featured" insert-before="*" />
+    <viewlet name="krain.ps.plone.mls.development_collection" insert-before="*" />
+  </order>
+
+  <hidden manager="plone.belowcontentbody" skinname="*">
+    <viewlet name="plone.mls.listing.listing_collection" />
+  </hidden>
+
+  <hidden manager="plone.belowcontentbody" skinname="*">
+    <viewlet name="plone.mls.listing.listing_search" />
+  </hidden>
+
+  <hidden manager="plone.belowcontentbody" skinname="*">
+    <viewlet name="plone.mls.listing.recent_listings" />
+  </hidden>
+
+  <hidden manager="plone.belowcontentbody" skinname="*">
+    <viewlet name="ps.plone.mls.listings.featured" />
+  </hidden>
+
+  <hidden manager="plone.belowcontentbody" skinname="*">
+    <viewlet name="ps.plone.mls.development_collection" />
+  </hidden>
+
+</object>
